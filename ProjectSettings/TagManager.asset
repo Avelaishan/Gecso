@@ -5,6 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Grid
+  - HidenHex
+  - OpenHex
+  - StartHex
+  - EnemyHex
+  - FinishHex
+  - UpHex
+  - UnOpenHex
   layers:
   - Default
   - TransparentFX
