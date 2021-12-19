@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 232582ac8a2fa164c97d2e9bb59862fd, type: 3}
-  m_Name: StartNode
+  m_Name: DefanceNode
   m_EditorClassIdentifier: 
-  name: Start
-  health: 0
-  attack: 0
+  name: Def
+  health: 60
+  attack: 40
   enemyModel: {fileID: 5310724791910437545, guid: 10e24e14035f5a846bf0f07d76b72ea1, type: 3}
-  isOpen: 1
-  isDiscovored: 1
+  isOpen: 0
+  isDiscovored: 0
   isRegen: 0

@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
-public class Player : CharacterStat
+
+public class Player : MonoBehaviour
 {
     public Text healthText;
     public Image healthBar;
-    int Heal;
-    int AttackPowerUp;
+    public int Heal;
+    public int AttackPowerUp;
+    public int health;
+    public int damage;
+    public int CurrentHealth { get; set; }
 
 }

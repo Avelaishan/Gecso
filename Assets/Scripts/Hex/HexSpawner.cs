@@ -1,4 +1,4 @@
-using System.Collections;
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,46 +11,75 @@ public class HexSpawner : MonoBehaviour
     public List<GameObject> tiles;
     public static HexSpawner instance;
     public int HealerNodCounter;
-    public HexStat hex;
+    public int StartNodCounter;
+    public int EndNodCounter;
+    public HexDataBase hexData;
+
     //public Player Player;
 
-     void Start()
+    void Start()
     {
         instance = this;
-        CreateHexTileMap(hex);
+        CreateHexTileMap(hexData);
     }
-
-    void CreateHexTileMap(HexStat hexStat)
+    void CreateHexTileMap(HexDataBase hexData)
     {
-        for (double x = 1; x <= row; x++)
+        for (double x = 0; x <= row-1; x++)
         {
-            for (double y = 1; y <= column; y++)
+            for (double y = 0; y <= column-1; y++)
             {
-                GameObject visual = Instantiate(hexStat.enemyModel);
+                var hexStat = SpawnChose(hexData);
+                var visual = Instantiate(hexStat.enemyModel);
                 visual.name = hexStat.name;
-                visual.transform.SetParent(BackGround);
+                visual.transform.SetParent(BackGround, true);
+                visual.transform.localScale = 20 * Vector3.one;
                 Vector3 pos;
-                double hexOffset = Math.Sqrt(2) * 120;
                 if (y % 2 == 0)
                 {
-                    pos = new Vector3((float)(x * hexOffset), (float)(y * hexOffset));
+                    pos = new Vector3((float)(x*20), (float)(y*20 * 3 / 4));
                 }
                 else
                 {
-                    pos = new Vector3((float)(x * hexOffset + hexOffset / 2), (float)(y * hexOffset + hexOffset / 2));
+                    pos = new Vector3((float)(x * 20 +10+1), (float)(y * 20 * 3 / 4));
                 }
                 visual.transform.localPosition = pos;
-                if (hexStat.isRegen)
-                {
-                    HealTileCounter();
-                }
                 tiles.Add(visual);
             }
         }
     Debug.Log(tiles.Count);
     }
+    HexStat SpawnChose(HexDataBase hexData)
+    {
+        System.Random rnd = new System.Random();
+        int hexToSpawn = rnd.Next(0, hexData.allHexTypes.Count);
+        var hexStat = hexData.allHexTypes[hexToSpawn];
+        /*if (hexStat.IsRegen)
+        {
+            HealTileCounter();
+        }*/
+        if (hexStat.name == "Start")
+        {
+            StartTileCounter();
+        }
+        if (hexStat.name == "End")
+        {
+            EndTileCounter();
+        }
+
+        return hexStat;
+    }
+    #region counter
     void HealTileCounter()
     {
         HealerNodCounter++;
     }
+    void StartTileCounter()
+    {
+        StartNodCounter++;
+    }
+    void EndTileCounter()
+    {
+        EndNodCounter++;
+    }
+    #endregion
 }

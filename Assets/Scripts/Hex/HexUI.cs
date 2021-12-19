@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class HexUI : MonoBehaviour
 {
-    public Button hexButton;
     public Text healthText; 
     public Text attackText;
 }
