@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 232582ac8a2fa164c97d2e9bb59862fd, type: 3}
-  m_Name: StandartEnemyNod
+  m_Name: StandardEnNod
   m_EditorClassIdentifier: 
   name: Enemy
   health: 70

@@ -6,4 +6,9 @@ using UnityEngine;
 public class HexDataBase : ScriptableObject
 {
     public List<HexStat> allHexTypes;
+    public HexStat GetHexStat(string hexName)
+    {
+        HexStat hexStat = allHexTypes.Find(x => x.name == hexName);
+        return hexStat;
+    }
 }

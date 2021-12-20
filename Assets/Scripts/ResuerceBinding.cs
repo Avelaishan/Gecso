@@ -9,44 +9,18 @@ public class ResuerceBinding : MonoBehaviour
     public HexDataBase hexData;
     public HexEnemy enemy;
 
-    public void SetEnemyComponent()
+    public void SetEnemyComponent(List<GameObject> objects)
     {
         foreach (GameObject gameObjects in HexSpawner.tiles)
         {
-           var hexObjName = gameObjects.GetComponent(name);
-            string hexStringName = hexObjName.name;
-
-           //Kill yourself for that 
-           if (hexStringName == "Enemy")
-           {
-               
-           }
-           if (hexStringName == "Start")
-           {
-
-           }
-           if (hexStringName == "End")
-           {
-
-           }
-           if (hexStringName == "Move")
-           {
-
-           }
-           if (hexStringName == "Def")
-           {
-
-           }
-           if (hexStringName == "Heal")
-           {
-
-           }
-
+            var hexObjName = gameObjects.name;
+            enemy = gameObjects.GetComponent<HexEnemy>();
+            var hexFound = hexData.GetHexStat(hexObjName);
+            enemy.health = hexFound.health;
+            enemy.attack = hexFound.attack;
+            enemy.isOpen = hexFound.isOpen;
+            enemy.isDiscovored = hexFound.isDiscovored;
+            enemy.isRegen = hexFound.isRegen;
         }
-    }
-    void FindNameOfScriptableObject(GameObject gameObject)
-    {
-        
-        //return  hexName;
     }
 }
