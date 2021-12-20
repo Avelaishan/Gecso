@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
     public int health;
     public int damage;
     public int CurrentHealth { get; set; }
-    [Se]
     Camera camera;
 
     private void Update()
