@@ -26,23 +26,23 @@ public class HexSpawner : MonoBehaviour
 
     void CreateHexTileMap(HexDataBase hexData)
     {
-        for (int x = 0; x <= row-1; x++)
+        for (int x = 1; x <= row; x++)
         {
-            for (int y = 0; y <= column-1; y++)
+            for (int y = 1; y <= column; y++)
             {
                 var hexStat = SpawnChose(hexData);
                 var visual = Instantiate(hexStat.enemyModel);
                 visual.name = hexStat.name;
                 visual.transform.SetParent(BackGround, true);
-                visual.transform.localScale = 20 * Vector2.one;
+                visual.transform.localScale = 70 * Vector2.one;
                 Vector2 pos;
                 if (y % 2 == 0)
                 {
-                    pos = new Vector2(x*20,y*20 * 3 / 4);
+                    pos = new Vector2(x*70+35 - 350,y*70 * 3 / 4 - 140);
                 }
                 else
                 {
-                    pos = new Vector2(x * 20 + 10 + 1, y * 20 * 3 / 4);
+                    pos = new Vector2(x * 70 - 350, y * 70 * 3 / 4 - 140);
                 }
                 visual.transform.localPosition = pos;
                 tiles.Add(visual);
@@ -70,8 +70,9 @@ public class HexSpawner : MonoBehaviour
         else
         {
             var hexToSpawn = hexData.allHexTypes.FindAll(x => x.isEnd == false && x.isStart == false);
+
             var hexDataToSpawn = rnd.Next(0, hexToSpawn.Count);
-            var hexStat = hexToSpawn[hexDataToSpawn];
+            var hexStat = hexToSpawn[1];
             EntranceCounter++;
             return hexStat;
         }

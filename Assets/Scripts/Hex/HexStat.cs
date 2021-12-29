@@ -7,12 +7,15 @@ public class HexStat : ScriptableObject
 {   
     public int health;
     public int attack;
+    public int chanceToSpawn;
     public GameObject enemyModel;
     public bool isOpen;
     public bool isDiscovored;
     public bool isRegen;
     public bool isStart;
     public bool isEnd;
+    public bool isKilled;
+
 
     public int Health => health;
     public int Attack => attack;
@@ -21,4 +24,6 @@ public class HexStat : ScriptableObject
     public bool IsRegen => isRegen;
     public bool IsStart => isStart;
     public bool IsEnd => isEnd;
+    public bool IsKilled => isKilled;
+
 }
