@@ -9,5 +9,8 @@ public class HexEnemy : MonoBehaviour
     public bool isOpen;
     public bool isDiscovored;
     public bool isRegen;
+    public bool isStart;
+    public bool isEnd;
+    public bool isKilled;
 
 }
