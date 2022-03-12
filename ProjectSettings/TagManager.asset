@@ -3,15 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Grid
-  - HidenHex
-  - OpenHex
-  - StartHex
-  - EnemyHex
-  - FinishHex
-  - UpHex
-  - UnOpenHex
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -48,6 +40,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 421808397
     locked: 0
   - name: Grid
     uniqueID: 409333867

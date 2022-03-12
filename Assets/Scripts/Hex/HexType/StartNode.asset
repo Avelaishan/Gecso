@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 1
   attack: 0
+  chanceToSpawn: 0
   enemyModel: {fileID: 5310724791910437545, guid: 10e24e14035f5a846bf0f07d76b72ea1, type: 3}
   isOpen: 1
   isDiscovored: 1
   isRegen: 0
   isStart: 1
   isEnd: 0
+  isKilled: 0
+  enemyPrefab: {fileID: -8623169647513730713, guid: 10e24e14035f5a846bf0f07d76b72ea1, type: 3}

@@ -22,3 +22,4 @@ MonoBehaviour:
   isStart: 0
   isEnd: 0
   isKilled: 0
+  enemyPrefab: {fileID: -8623169647513730713, guid: 10e24e14035f5a846bf0f07d76b72ea1, type: 3}

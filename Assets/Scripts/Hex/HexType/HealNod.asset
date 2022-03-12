@@ -13,12 +13,8 @@ MonoBehaviour:
   m_Name: HealNod
   m_EditorClassIdentifier: 
   health: 60
-  attack: 30
-  chanceToSpawn: 10
-  enemyModel: {fileID: 5310724791910437545, guid: 10e24e14035f5a846bf0f07d76b72ea1, type: 3}
-  isOpen: 0
-  isDiscovored: 0
+  damage: 20
+  enemyPrefab: {fileID: -8623169647513730713, guid: 10e24e14035f5a846bf0f07d76b72ea1, type: 3}
   isRegen: 1
   isStart: 0
   isEnd: 0
-  isKilled: 0
