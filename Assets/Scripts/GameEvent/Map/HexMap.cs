@@ -1,5 +1,6 @@
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,12 +15,15 @@ public class HexMap : MonoBehaviour
     private int entranceCounter;
     private int enemyCounter;
     public HexEnemy[,] HexEnemies;
+    [SerializeField]
+    GameObject tileMap;
 
 
     void Start()
     {
         HexEnemies = new HexEnemy[(int)MapData.Row, (int)MapData.Column];
         CreateHexTileMap(hexData);
+        SetStartTileMap();
     }
 
     void CreateHexTileMap(HexDataBase hexData)
@@ -36,23 +40,22 @@ public class HexMap : MonoBehaviour
         }
     }
     //hexSize must be founded in GetHexWidht, that currently didnt work ¯\_(-_-)_/¯
-    private Vector2 SetPositionVector(int row, int column, float hexSize =1)
+     Vector2 SetPositionVector(int row, int column, float hexWight = 70)
     {
-        
         Vector2 pos;
-        var hexWidth = hexSize / Math.Sqrt(3);
+        var hexSize = hexWight / Math.Sqrt(3);
         if (column % 2 == 0)
         {
-            pos = new Vector2(row, (float)(column * hexWidth * 3 / 2));
+            pos = new Vector2(row* hexWight, (float)(column * hexSize * 3 / 2));
         }
         else
         {
-            pos = new Vector2(row + 0.5f, (float)(column * hexWidth * 3 / 2));
+            pos = new Vector2(row* hexWight + hexWight/2, (float)(column * hexSize * 3 / 2));
         }
         return pos;
     }
 
-    public HexData SelectHex(HexDataBase hexData)
+    public HexBaseData SelectHex(HexDataBase hexData)
     {
         var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
         if (entranceCounter == 0)
@@ -72,7 +75,6 @@ public class HexMap : MonoBehaviour
             entranceCounter++;
             var hexToSpawn = hexData.AllHexTypes.FindAll(x => !x.IsEnd && !x.IsStart);
             var randomChance  = UnityEngine.Random.Range(1, 100);
-            Debug.Log(randomChance);
             if( chanceToSpawnEnemy <= randomChance)
             {
                 var hexStat = hexData.AllHexTypes.Find(x => x.Damage == 0 && x.Health == 1 && !x.IsStart); ;
@@ -117,28 +119,27 @@ public class HexMap : MonoBehaviour
         }
     }
     //didnt work for some reason
-    private Vector2 GetHexWidht(GameObject gameObject)
+    Vector2 GetHexWidht(HexEnemy hexEnemy)
     {
-        var hexSize = gameObject.GetComponent<Renderer>().bounds.size;
+        var hexSize = hexEnemy.GetComponent<Renderer>().bounds.size;
         return hexSize;
     }
+
     public void DiscoverNearHex(HexEnemy targetHex)
     {
         Vector2Int vector = GetVector2(targetHex);
         foreach (var item in Neighbors(targetHex))
         {
             item.IsDiscovored = true;
-            targetHex.ChangeCollor(targetHex);
-
         }
-
     }
+
     public void OpenTargetHex(HexEnemy targetHex)
     {
         targetHex.IsOpen = true;
-        targetHex.ChangeCollor(targetHex);
     }
-    private Vector2Int GetVector2(HexEnemy hexEnemy)
+
+    Vector2Int GetVector2(HexEnemy hexEnemy)
     {
         for (int i = 0; i < HexEnemies.GetLength(0); i++)
         {
@@ -152,7 +153,8 @@ public class HexMap : MonoBehaviour
         }
     return default;
     }
-    private Vector2Int[] matrix = new Vector2Int[]
+
+    Vector2Int[] matrix = new Vector2Int[]
     {
         new Vector2Int(0, -1),
         new Vector2Int(-1, 0),
@@ -161,7 +163,8 @@ public class HexMap : MonoBehaviour
         new Vector2Int(1, 0),
         new Vector2Int(1, -1)
     };
-    private List<HexEnemy> Neighbors(HexEnemy hexEnemy)
+
+    List<HexEnemy> Neighbors(HexEnemy hexEnemy)
     {
         var position = GetVector2(hexEnemy); //1.1
         var neighbors = new List<HexEnemy>();
@@ -177,5 +180,14 @@ public class HexMap : MonoBehaviour
             neighbors.Add(varov);
         }
         return neighbors;
+    }
+
+    public void SetStartTileMap()
+    {
+        int x = (int)MapData.Row - 1;
+        int y = (int)MapData.Column - 1;
+        float lastHexPosX = HexEnemies[x, y].transform.position.x;
+        float lastHexPosY = HexEnemies[x, y].transform.position.y;
+        tileMap.transform.position = new Vector2(-lastHexPosX/2, -lastHexPosY/2);
     }
 }

@@ -2154,10 +2154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f574c2dea1d8bac41986d28d9c4d0e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RowSlider: {fileID: 1959407887}
-  ColumnSlider: {fileID: 1615022175}
-  RowTextField: {fileID: 138933337}
-  ColumnTextField: {fileID: 1351749741}
+  rowSlider: {fileID: 1959407887}
+  columnSlider: {fileID: 1615022175}
+  rowTextField: {fileID: 138933337}
+  columnTextField: {fileID: 1351749741}
 --- !u!1 &1351749739
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,11 +6,11 @@ using UnityEngine;
 public class HexDataBase : ScriptableObject
 {
     [SerializeField]
-    private List<HexData> allHexTypes;
-    public List<HexData> AllHexTypes => allHexTypes;
-    public HexData GetHexStat(string hexName)
+    private List<HexBaseData> allHexTypes;
+    public List<HexBaseData> AllHexTypes => allHexTypes;
+    public HexBaseData GetHexStat(string hexName)
     {
-        HexData hexStat = allHexTypes.Find(x => x.name == hexName);
+        HexBaseData hexStat = allHexTypes.Find(x => x.name == hexName);
         return hexStat;
     }
 

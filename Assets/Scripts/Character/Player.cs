@@ -15,15 +15,16 @@ public class Player : MonoBehaviour
     #endregion 
     #region int stats
     [SerializeField]
-    private int Heal;
+    public int Heal;
     [SerializeField]
-    private int AttackPowerUp;
+    public int AttackPowerUp;
     [SerializeField]
     private int health;
     [SerializeField]
     private int damage;
+    public bool DamageBoostActiv;
     [SerializeField]
-    public int CurrentHealth;
+    private int CurrentHealth;
     public int Damage => damage;
     #endregion 
 
@@ -48,6 +49,15 @@ public class Player : MonoBehaviour
     private void PlayerDeath()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
 
+    public void HealPlayer()
+    {
+        Heal--;
+        health += 30;
+    }
+    public void AttackUpPlayer()
+    {
+        AttackPowerUp--;
     }
 }

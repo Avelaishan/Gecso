@@ -16,7 +16,11 @@ public class HexEnemy : MonoBehaviour
     private bool isKilled;
     #endregion
     public int Damage => damage;
-    public bool IsKilled => isKilled;
+    public bool IsKilled
+    {
+        get => isKilled;
+        set { isKilled = value; }
+    }
     public bool IsDiscovored
     {
         get => isDiscovored;
@@ -27,41 +31,25 @@ public class HexEnemy : MonoBehaviour
         get => isOpen;
         set { isOpen = value; }
     }
-    #region color
-    [SerializeField]
-    private Color startColor;
-    [SerializeField]
-    private Color standartColor;
-    [SerializeField]
-    private Color DiscovoredColor;
-    [SerializeField]
-    private Color EnemyColor;
-    [SerializeField]
-    private Color endColor;
-    [SerializeField]
-    private Color killedColor;
-    #endregion
+    private MaterialsDataBase materialsData;
 
 
-    public void HexInitialization(HexData hexData)
+    public void HexInitialization(HexBaseData hexData)
     {
         health = hexData.Health;
         damage = hexData.Damage;
-        isRegen = hexData.IsRegen;
-        hexData.EnemyModel.GetComponent<Renderer>().sharedMaterial.color = standartColor;
         if (hexData.IsStart)
         {
             isStart = true;
             isOpen = true;
             isDiscovored = true;
-            hexData.EnemyModel.GetComponent<Renderer>().sharedMaterial.color = startColor;
         }
         if (hexData.IsEnd)
         {
             isEnd = true;
         }
-
     }
+
     public void GetDamage(int damage)
     {
         health -= damage;
@@ -85,22 +73,35 @@ public class HexEnemy : MonoBehaviour
 
     public void ChangeCollor(HexEnemy hexEnemy)
     {
-        if (hexEnemy.isDiscovored)
+        if (hexEnemy.isStart)
         {
-            hexEnemy.GetComponent<Renderer>().sharedMaterial.color = DiscovoredColor;
+            var hexmat = materialsData.GetHexMaterial("StartHex");
+            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
         }
-        if (hexEnemy.isOpen && hexEnemy.damage > 0)
+        else if (hexEnemy.isDiscovored)
         {
-            hexEnemy.GetComponent<Renderer>().sharedMaterial.color = EnemyColor;
-
+            var hexmat = materialsData.GetHexMaterial("StandartHex");
+            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
+        }
+        else if(hexEnemy.isOpen && hexEnemy.damage > 0)
+        {
+            var hexmat = materialsData.GetHexMaterial("DiscovoredHex");
+            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
         }
         else if (hexEnemy.isEnd)
         {
-            hexEnemy.GetComponent<Renderer>().sharedMaterial.color = endColor;
+            var hexmat = materialsData.GetHexMaterial("EndHex");
+            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
         }
         else if (hexEnemy.IsKilled)
         {
-            hexEnemy.GetComponent<Renderer>().sharedMaterial.color = killedColor;
+            var hexmat = materialsData.GetHexMaterial("KilledHex");
+            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
+        }
+        else if (hexEnemy.isStart)
+        {
+            var hexmat = materialsData.GetHexMaterial("KilledHex");
+            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
         }
     }
 }

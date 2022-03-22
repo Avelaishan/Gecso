@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     protected Action<int,int> Fight;
     [SerializeField]
     private new Camera camera;
+    private BonusButtonScripts bonusButtonScripts;
 
     private void Update()
     {
@@ -21,19 +22,18 @@ public class GameController : MonoBehaviour
             var targetHexEnemy = GetTargetRaycast();
             if (targetHexEnemy != null)
             {
-                /*if(targetHexEnemy.IsDiscovored == false)
+                if(targetHexEnemy.IsDiscovored == false)
                 {
 
-                }*/
+                }
                 if (targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == false)
                 {
                     HexMap.OpenTargetHex(targetHexEnemy);
-
+                    AddBonus(player);
                 }
                 else if (targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
                 {
-                    gameFight(targetHexEnemy);
-
+                    GameFight(targetHexEnemy);
                 }
             }
         }
@@ -56,18 +56,44 @@ public class GameController : MonoBehaviour
         return null;
     }
 
-    public void gameFight(HexEnemy hexEnemy)
+    public void GameFight(HexEnemy hexEnemy)
     {
-        hexEnemy.GetDamage(player.Damage);
-        if (!hexEnemy.IsKilled)
+        if (player.DamageBoostActiv)
         {
-            player.GetDamage(hexEnemy.Damage);
+            hexEnemy.GetDamage(999);
+            player.DamageBoostActiv = false;
         }
-        if (hexEnemy.IsKilled)
+        if (!player.DamageBoostActiv)
         {
-            DiscoverNearHex(hexEnemy);
-            hexEnemy.ChangeCollor(hexEnemy);
+          hexEnemy.GetDamage(player.Damage);
+            if (!hexEnemy.IsKilled)
+            {
+                player.GetDamage(hexEnemy.Damage);
+            }
+            if (hexEnemy.IsKilled)
+            {
+                DiscoverNearHex(hexEnemy);
+            }
         }
+        //if (!hexEnemy.IsKilled)
+        //{
+        //    player.GetDamage(hexEnemy.Damage);
+        //}
+        //if (hexEnemy.IsKilled)
+        //{
+        //    DiscoverNearHex(hexEnemy);
+        //}
     }
 
+    public void AddBonus(Player player)
+    {
+        if (UnityEngine.Random.Range(0, 100) >= 20)
+        {
+            player.Heal++;
+        }
+        else
+        {
+            player.AttackPowerUp++;
+        }
+    }
 }
