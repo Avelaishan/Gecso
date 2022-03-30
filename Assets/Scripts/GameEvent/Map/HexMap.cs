@@ -34,15 +34,48 @@ public class HexMap : MonoBehaviour
             {
                 //var HexData = SelectHex(hexData);
                 //var position = SetPositionVector(x, y);
-                var hexObj = spawner.HexSpawn(SelectHex(hexData), SetPositionVector(x, y));
+
+                //var hexObj = spawner.HexSpawn(SelectHex(hexData), SetPositionVector(x, y));
+                var hexObj = HexSpawn(SetPositionVector(x, y));
                 //GetHexWidht();
                 hexObj.name = $"Hex {x} / {y} ";
                 HexEnemies[x, y] = hexObj;
             }
         }
     }
+     HexEnemy HexSpawn(Vector2 vector2)
+    {
+        var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
+        if (entranceCounter == 0)
+        {
+            entranceCounter++;
+            HexKeyPointObj hexStat = hexData.GetKeyHexStat("");
+            return spawner.HexSpawn(hexStat, vector2);
+        }
+        else if (entranceCounter == lastEntrance)
+        {
+            entranceCounter++;
+            HexKeyPointObj hexStat = hexData.GetKeyHexStat("End");
+            return spawner.HexSpawn(hexStat, vector2);
+        }
+        else
+        {
+            entranceCounter++;
+            var randomChance = UnityEngine.Random.Range(1, 100);
+            if (chanceToSpawnEnemy >= randomChance)
+            {
+                HexEnemyObj hexStat = hexData.GetEnemyHexStat();
+                return spawner.HexSpawn(hexStat, vector2);
+            }
+            else
+            {
+                BaseHexObj hexStat = hexData.GetHexStat();
+                return spawner.HexSpawn(hexStat, vector2);
+            }
+        }
+    }
     //hexSize must be founded in GetHexWidht, that currently didnt work ¯\_(-_-)_/¯
-     Vector2 SetPositionVector(int row, int column, float hexWight = 70)
+    Vector2 SetPositionVector(int row, int column, float hexWight = 70)
     {
         Vector2 pos;
         var hexSize = hexWight / Math.Sqrt(3);
@@ -57,7 +90,7 @@ public class HexMap : MonoBehaviour
         return pos;
     }
 
-    public BaseHexObj SelectHex(HexDataBase hexData)
+    public BaseHexObj SelectHex()
     {
         var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
         if (entranceCounter == 0)
@@ -87,67 +120,6 @@ public class HexMap : MonoBehaviour
                 return hexStat;
             }
         }
-
-        /*var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
-        if (entranceCounter == 0)
-        {
-            entranceCounter++;
-            var hexStat = hexData.AllHexTypes.Find(x => x.IsStart);
-            return hexStat;
-        }
-        else if (entranceCounter == lastEntrance)
-        {
-            entranceCounter++;
-            var hexStat = hexData.AllHexTypes.Find(x => x.IsEnd);
-            return hexStat;
-        }
-        else
-        {
-            entranceCounter++;
-            var hexToSpawn = hexData.AllHexTypes.FindAll(x => !x.IsEnd && !x.IsStart);
-            var randomChance  = UnityEngine.Random.Range(1, 100);
-            if( chanceToSpawnEnemy <= randomChance)
-            {
-                var hexStat = hexData.AllHexTypes.Find(x => x.Damage == 0 && x.Health == 1 && !x.IsStart); ;
-                return hexStat;
-            }
-            else
-            {
-                int enemyCounter = 0;
-                var hexDataToSpawn = UnityEngine.Random.Range(0, hexToSpawn.Count);
-                if (hexToSpawn[hexDataToSpawn].IsRegen)
-                {
-                    int regenCount = 0;
-                    regenCount++;
-                    enemyCounter++;
-                    if (regenCount >= 3)
-                    {
-                        var hexStat = hexData.AllHexTypes.Find(x => x.Damage == 0 && x.Health == 1 && !x.IsStart); ;
-                        return hexStat;
-                    }
-                    else
-                    {
-                        var hexStat = hexToSpawn[hexDataToSpawn];
-                        return hexStat;
-                    }
-                }
-                else if (hexToSpawn[hexDataToSpawn].Damage ==0)
-                {
-                    var secondRoll = UnityEngine.Random.Range(0, hexToSpawn.Count);
-                    if (hexToSpawn[secondRoll].Damage != 0)
-                    {
-                        enemyCounter++;
-                    }
-                    var hexStat = hexToSpawn[secondRoll];
-                    return hexStat;
-                }
-                else
-                {
-                    var hexStat = hexToSpawn[hexDataToSpawn];
-                    return hexStat;
-                }
-            }
-        }*/
     }
     //didnt work for some reason
     Vector2 GetHexWidht(HexEnemy hexEnemy)
@@ -168,7 +140,6 @@ public class HexMap : MonoBehaviour
     public void OpenTargetHex(HexEnemy targetHex)
     {
         targetHex.IsOpen = true;
-        targetHex.ChangeCollor(targetHex);
     }
 
     Vector2Int GetVector2(HexEnemy hexEnemy)

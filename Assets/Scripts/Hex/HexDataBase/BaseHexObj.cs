@@ -9,12 +9,11 @@ public class BaseHexObj : ScriptableObject
     public string Name;
     [SerializeField]
     internal HexEnemy enemyPrefab;
-    [SerializeField]
-    internal bool isDiscovored;
-    [SerializeField]
+
+    /*[SerializeField]
     internal bool isOpen;
     [SerializeField]
-    internal bool isClosed;
+    internal bool isClosed;*/
     [SerializeField]
     private readonly bool baseHex = true;
     [SerializeField]
@@ -23,12 +22,7 @@ public class BaseHexObj : ScriptableObject
     internal Material ClassHexMaterial;
 
     public HexEnemy EnemyPrefab => enemyPrefab;
-    public bool IsDiscovored
-    {
-        get => isDiscovored;
-        set { isDiscovored = value; }
-    }
-    public bool IsOpen
+    /*public bool IsOpen
     {
         get => isOpen;
         set { isOpen = value; }
@@ -37,6 +31,6 @@ public class BaseHexObj : ScriptableObject
     {
         get => isClosed;
         set { isClosed = value; }
-    }
+    }*/
     public bool BaseHex => baseHex;
 }

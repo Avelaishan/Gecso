@@ -11,7 +11,6 @@ public class HexEnemy : MonoBehaviour
     private bool isOpen;
     private bool isClosed;
     private string name;
-
     private bool isDiscovored;
     private bool isRegen;
     private bool isStart;
@@ -39,16 +38,10 @@ public class HexEnemy : MonoBehaviour
 
     public void HexInitialization(BaseHexObj baseHexObj)
     {
-        isDiscovored = baseHexObj.IsDiscovored;
-        isOpen = baseHexObj.isOpen;
-        isClosed = baseHexObj.isClosed;
         name = baseHexObj.Name;
     }
     public void HexInitialization(HexEnemyObj hexEnemyObj)
     {
-        isDiscovored = hexEnemyObj.IsDiscovored;
-        isOpen = hexEnemyObj.isOpen;
-        isClosed = hexEnemyObj.isClosed;
         health = hexEnemyObj.Health;
         damage = hexEnemyObj.Damage;
         name = hexEnemyObj.Name;
@@ -56,27 +49,10 @@ public class HexEnemy : MonoBehaviour
     public void HexInitialization(HexKeyPointObj hexKeyPointObj)
     {
         isDiscovored = hexKeyPointObj.IsDiscovored;
-        isOpen = hexKeyPointObj.isOpen;
-        isClosed = hexKeyPointObj.isClosed;
         health = hexKeyPointObj.Health;
         damage = hexKeyPointObj.Damage;
         name = hexKeyPointObj.Name;
     }
-    /*public void HexInitialization(HexDataBase hexData)
-    {
-        health = hexData.Health;
-        damage = hexData.Damage;
-        if (hexData.IsStart)
-        {
-            isStart = true;
-            isOpen = true;
-            isDiscovored = true;
-        }
-        if (hexData.IsEnd)
-        {
-            isEnd = true;
-        }
-    }*/
 
     public void GetDamage(int damage)
     {
@@ -99,7 +75,7 @@ public class HexEnemy : MonoBehaviour
         isKilled = true;
     }
 
-    public void ChangeCollor(HexEnemy hexEnemy)
+    /*public void ChangeCollor(HexEnemy hexEnemy)
     {
         if (hexEnemy.isStart)
         {
@@ -131,5 +107,5 @@ public class HexEnemy : MonoBehaviour
             var hexmat = materialsData.GetHexMaterial("KilledHex");
             hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
         }
-    }
+    }*/
 }
