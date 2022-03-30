@@ -32,6 +32,8 @@ public class HexMap : MonoBehaviour
         {
             for (int y = 0; y <= MapData.Column - 1; y++)
             {
+                //var HexData = SelectHex(hexData);
+                //var position = SetPositionVector(x, y);
                 var hexObj = spawner.HexSpawn(SelectHex(hexData), SetPositionVector(x, y));
                 //GetHexWidht();
                 hexObj.name = $"Hex {x} / {y} ";
@@ -55,9 +57,38 @@ public class HexMap : MonoBehaviour
         return pos;
     }
 
-    public HexBaseData SelectHex(HexDataBase hexData)
+    public BaseHexObj SelectHex(HexDataBase hexData)
     {
         var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
+        if (entranceCounter == 0)
+        {
+            entranceCounter++;
+            HexKeyPointObj hexStat = hexData.GetKeyHexStat("");
+            return hexStat;
+        }
+        else if (entranceCounter == lastEntrance)
+        {
+            entranceCounter++;
+            HexKeyPointObj hexStat = hexData.GetKeyHexStat("End");
+            return hexStat;
+        }
+        else
+        {
+            entranceCounter++;
+            var randomChance = UnityEngine.Random.Range(1, 100);
+            if (chanceToSpawnEnemy >= randomChance)
+            {
+                HexEnemyObj hexStat = hexData.GetEnemyHexStat();
+                return hexStat;
+            }
+            else
+            {
+                BaseHexObj hexStat = hexData.GetHexStat();
+                return hexStat;
+            }
+        }
+
+        /*var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
         if (entranceCounter == 0)
         {
             entranceCounter++;
@@ -116,7 +147,7 @@ public class HexMap : MonoBehaviour
                     return hexStat;
                 }
             }
-        }
+        }*/
     }
     //didnt work for some reason
     Vector2 GetHexWidht(HexEnemy hexEnemy)
@@ -137,6 +168,7 @@ public class HexMap : MonoBehaviour
     public void OpenTargetHex(HexEnemy targetHex)
     {
         targetHex.IsOpen = true;
+        targetHex.ChangeCollor(targetHex);
     }
 
     Vector2Int GetVector2(HexEnemy hexEnemy)

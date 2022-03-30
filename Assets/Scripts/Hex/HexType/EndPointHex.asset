@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60b0db88a830730459850343bf957a2d, type: 3}
+  m_Name: EndPointHex
+  m_EditorClassIdentifier: 
+  Name: End
+  enemyPrefab: {fileID: -8623169647513730713, guid: 10e24e14035f5a846bf0f07d76b72ea1, type: 3}
+  isDiscovored: 0
+  isOpen: 0
+  isClosed: 0
+  HexMaterial: {fileID: 2100000, guid: b2269935c0214fb4fbcc86d51226cdab, type: 2}
+  ClassHexMaterial: {fileID: 2100000, guid: f0bb8a9e21316424c96a61e1a26953d9, type: 2}
+  health: 60
+  damage: 15
+  isEnemy: 1
+  isStart: 0
+  isEnd: 1

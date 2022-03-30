@@ -89,11 +89,20 @@ public class GameController : MonoBehaviour
     {
         if (UnityEngine.Random.Range(0, 100) >= 20)
         {
-            player.Heal++;
+            if(UnityEngine.Random.Range(0, 100) >= 20)
+            {
+                player.Heal++;
+
+            }
+            else
+            {
+                player.AttackPowerUp++;
+
+            }
         }
         else
         {
-            player.AttackPowerUp++;
+
         }
     }
 }

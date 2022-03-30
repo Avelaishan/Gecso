@@ -736,7 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dec855f08e4a8f4091a90118b9bd2cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
+  canvas: {fileID: 1717547423}
 --- !u!1 &854165836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,7 +1003,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawner: {fileID: 162092554}
   hexData: {fileID: 11400000, guid: f6912dd79074ade4e9af64b259e2881b, type: 2}
-  chanceToSpawnEnemy: 90
+  chanceToSpawnEnemy: 0
   tileMap: {fileID: 162092553}
 --- !u!114 &1565571408
 MonoBehaviour:
@@ -1017,9 +1017,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d8c41b713fe1784c906552b7412833a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexMap: {fileID: 1565571407}
-  player: {fileID: 752908305}
-  camera: {fileID: 828548439}
+  HexMap: {fileID: 0}
+  player: {fileID: 0}
+  camera: {fileID: 0}
 --- !u!4 &1565571409
 Transform:
   m_ObjectHideFlags: 0

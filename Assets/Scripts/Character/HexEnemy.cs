@@ -9,6 +9,9 @@ public class HexEnemy : MonoBehaviour
     private int health;
     private int damage;
     private bool isOpen;
+    private bool isClosed;
+    private string name;
+
     private bool isDiscovored;
     private bool isRegen;
     private bool isStart;
@@ -34,7 +37,32 @@ public class HexEnemy : MonoBehaviour
     private MaterialsDataBase materialsData;
 
 
-    public void HexInitialization(HexBaseData hexData)
+    public void HexInitialization(BaseHexObj baseHexObj)
+    {
+        isDiscovored = baseHexObj.IsDiscovored;
+        isOpen = baseHexObj.isOpen;
+        isClosed = baseHexObj.isClosed;
+        name = baseHexObj.Name;
+    }
+    public void HexInitialization(HexEnemyObj hexEnemyObj)
+    {
+        isDiscovored = hexEnemyObj.IsDiscovored;
+        isOpen = hexEnemyObj.isOpen;
+        isClosed = hexEnemyObj.isClosed;
+        health = hexEnemyObj.Health;
+        damage = hexEnemyObj.Damage;
+        name = hexEnemyObj.Name;
+    }
+    public void HexInitialization(HexKeyPointObj hexKeyPointObj)
+    {
+        isDiscovored = hexKeyPointObj.IsDiscovored;
+        isOpen = hexKeyPointObj.isOpen;
+        isClosed = hexKeyPointObj.isClosed;
+        health = hexKeyPointObj.Health;
+        damage = hexKeyPointObj.Damage;
+        name = hexKeyPointObj.Name;
+    }
+    /*public void HexInitialization(HexDataBase hexData)
     {
         health = hexData.Health;
         damage = hexData.Damage;
@@ -48,7 +76,7 @@ public class HexEnemy : MonoBehaviour
         {
             isEnd = true;
         }
-    }
+    }*/
 
     public void GetDamage(int damage)
     {
