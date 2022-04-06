@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class MapData : MonoBehaviour
 {
-    public static float Row = 3;
-    public static float Column = 3;
+    public static float Row = 2;
+    public static float Column = 2;
 }

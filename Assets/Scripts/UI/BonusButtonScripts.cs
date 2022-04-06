@@ -7,10 +7,24 @@ public class BonusButtonScripts : MonoBehaviour
 {
     void HealPlayer(Player player)
     {
-        player.HealPlayer();
+        if(player.Heal >= 1)
+        {
+            player.HealPlayer();
+        }
+        else
+        {
+            Debug.Log("No Heal");
+        }
     }
     void OnePunchPlayer(Player player)
     {
-        player.DamageBoostActiv = true;
+        if(player.AttackPowerUp >= 1)
+        {
+            player.DamageBoostActiv = true;
+        }
+        else
+        {
+            Debug.Log("No Damage Busters");
+        }
     }
 }

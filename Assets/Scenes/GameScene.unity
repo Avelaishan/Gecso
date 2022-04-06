@@ -370,7 +370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 162092553}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -80, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1717547424}
@@ -580,6 +580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageText: {fileID: 281775120}
   healthText: {fileID: 580915253}
+  Score: 0
   Heal: 0
   AttackPowerUp: 0
   health: 100
@@ -1003,7 +1004,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawner: {fileID: 162092554}
   hexData: {fileID: 11400000, guid: f6912dd79074ade4e9af64b259e2881b, type: 2}
-  chanceToSpawnEnemy: 0
+  chanceToSpawnEnemy: 20
   tileMap: {fileID: 162092553}
 --- !u!114 &1565571408
 MonoBehaviour:
@@ -1017,9 +1018,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d8c41b713fe1784c906552b7412833a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexMap: {fileID: 0}
-  player: {fileID: 0}
-  camera: {fileID: 0}
+  HexMap: {fileID: 1565571407}
+  player: {fileID: 752908305}
+  camera: {fileID: 828548439}
 --- !u!4 &1565571409
 Transform:
   m_ObjectHideFlags: 0

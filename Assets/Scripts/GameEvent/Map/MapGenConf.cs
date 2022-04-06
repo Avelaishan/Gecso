@@ -16,11 +16,16 @@ public class MapGenConf : MonoBehaviour
         {
             rowTextField.text = v.ToString("0");
             MapData.Row = v;
+
         });
         columnSlider.onValueChanged.AddListener((v) =>
         {
             columnTextField.text = v.ToString("0");
             MapData.Column = v;
+            if (MapData.Column == 0)
+            {
+                MapData.Column = 2;
+            }
         });
     }
 }

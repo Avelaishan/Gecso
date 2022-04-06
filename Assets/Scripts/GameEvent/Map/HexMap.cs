@@ -14,14 +14,14 @@ public class HexMap : MonoBehaviour
     private int chanceToSpawnEnemy;
     private int entranceCounter;
     private int enemyCounter;
-    public HexEnemy[,] HexEnemies;
+    public HexBase[,] HexEnemies;
     [SerializeField]
     GameObject tileMap;
 
 
     void Start()
     {
-        HexEnemies = new HexEnemy[(int)MapData.Row, (int)MapData.Column];
+        HexEnemies = new HexBase[(int)MapData.Row, (int)MapData.Column];
         CreateHexTileMap(hexData);
         SetStartTileMap();
     }
@@ -34,16 +34,14 @@ public class HexMap : MonoBehaviour
             {
                 //var HexData = SelectHex(hexData);
                 //var position = SetPositionVector(x, y);
-
                 //var hexObj = spawner.HexSpawn(SelectHex(hexData), SetPositionVector(x, y));
                 var hexObj = HexSpawn(SetPositionVector(x, y));
-                //GetHexWidht();
                 hexObj.name = $"Hex {x} / {y} ";
                 HexEnemies[x, y] = hexObj;
             }
         }
     }
-     HexEnemy HexSpawn(Vector2 vector2)
+     HexBase HexSpawn(Vector2 vector2)
     {
         var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
         if (entranceCounter == 0)
@@ -90,7 +88,7 @@ public class HexMap : MonoBehaviour
         return pos;
     }
 
-    public BaseHexObj SelectHex()
+    /*public BaseHexObj SelectHex()
     {
         var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
         if (entranceCounter == 0)
@@ -120,15 +118,15 @@ public class HexMap : MonoBehaviour
                 return hexStat;
             }
         }
-    }
+    }*/
     //didnt work for some reason
-    Vector2 GetHexWidht(HexEnemy hexEnemy)
+    Vector2 GetHexWidht(HexBase hexEnemy)
     {
         var hexSize = hexEnemy.GetComponent<Renderer>().bounds.size;
         return hexSize;
     }
 
-    public void DiscoverNearHex(HexEnemy targetHex)
+    public void DiscoverNearHex(HexBase targetHex)
     {
         Vector2Int vector = GetVector2(targetHex);
         foreach (var item in Neighbors(targetHex))
@@ -137,12 +135,12 @@ public class HexMap : MonoBehaviour
         }
     }
 
-    public void OpenTargetHex(HexEnemy targetHex)
+    public void OpenTargetHex(HexBase targetHex)
     {
         targetHex.IsOpen = true;
     }
 
-    Vector2Int GetVector2(HexEnemy hexEnemy)
+    Vector2Int GetVector2(HexBase hexEnemy)
     {
         for (int i = 0; i < HexEnemies.GetLength(0); i++)
         {
@@ -167,10 +165,10 @@ public class HexMap : MonoBehaviour
         new Vector2Int(1, -1)
     };
 
-    List<HexEnemy> Neighbors(HexEnemy hexEnemy)
+    List<HexBase> Neighbors(HexBase hexEnemy)
     {
         var position = GetVector2(hexEnemy); //1.1
-        var neighbors = new List<HexEnemy>();
+        var neighbors = new List<HexBase>();
         foreach (var item in matrix)
         {
             var neighborPos = position + item;

@@ -12,8 +12,8 @@ public class GameController : MonoBehaviour
     protected GameObject raycastedHex;
     protected Action<int,int> Fight;
     [SerializeField]
-    private new Camera camera;
-    private BonusButtonScripts bonusButtonScripts;
+    private Camera playerCamera;
+    //private BonusButtonScripts bonusButtonScripts;
 
     private void Update()
     {
@@ -22,40 +22,44 @@ public class GameController : MonoBehaviour
             var targetHexEnemy = GetTargetRaycast();
             if (targetHexEnemy != null)
             {
-                if(targetHexEnemy.IsDiscovored == false)
-                {
-
-                }
                 if (targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == false)
                 {
                     HexMap.OpenTargetHex(targetHexEnemy);
                     AddBonus(player);
                 }
-                else if (targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
+                else if (targetHexEnemy is HexBase && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
                 {
-                    GameFight(targetHexEnemy);
+                    DiscoverNearHex(targetHexEnemy);
+                }
+                else if (targetHexEnemy is HexEnemy enemy && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
+                {
+                    GameFight(enemy);
+                }
+                else if(targetHexEnemy is HexKeyEnemy keyEnemy && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
+                {
+                    GameFight(keyEnemy);
                 }
             }
         }
     }
-
-    private void DiscoverNearHex(HexEnemy obj)
+    private void DiscoverNearHex(HexBase obj)
     {
         HexMap.DiscoverNearHex(obj);
     }
-
-    public HexEnemy GetTargetRaycast()
+    public HexBase GetTargetRaycast()
     {
-        RaycastHit2D raycastHit = Physics2D.GetRayIntersection(camera.ScreenPointToRay(Input.mousePosition));
+        RaycastHit2D raycastHit = Physics2D.GetRayIntersection(playerCamera.ScreenPointToRay(Input.mousePosition));
         if (raycastHit.collider != null)
         {
             raycastedHex = raycastHit.collider.gameObject;
-            var hexEnemy = raycastedHex.GetComponent<HexEnemy>();
+            var hexEnemy = raycastedHex.GetComponent<HexBase>();
             return hexEnemy;
         }
-        return null;
+        else
+        {
+            return null;
+        }
     }
-
     public void GameFight(HexEnemy hexEnemy)
     {
         if (player.DamageBoostActiv)
@@ -75,16 +79,7 @@ public class GameController : MonoBehaviour
                 DiscoverNearHex(hexEnemy);
             }
         }
-        //if (!hexEnemy.IsKilled)
-        //{
-        //    player.GetDamage(hexEnemy.Damage);
-        //}
-        //if (hexEnemy.IsKilled)
-        //{
-        //    DiscoverNearHex(hexEnemy);
-        //}
     }
-
     public void AddBonus(Player player)
     {
         if (UnityEngine.Random.Range(0, 100) >= 20)
@@ -97,12 +92,7 @@ public class GameController : MonoBehaviour
             else
             {
                 player.AttackPowerUp++;
-
             }
-        }
-        else
-        {
-
         }
     }
 }

@@ -12,8 +12,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Text healthText;
     private Image healthBar;
-    #endregion 
+    #endregion
     #region int stats
+    public Int32 Score;
     [SerializeField]
     public int Heal;
     [SerializeField]
@@ -59,5 +60,9 @@ public class Player : MonoBehaviour
     public void AttackUpPlayer()
     {
         AttackPowerUp--;
+    }
+    public void ChangeScore(int hexScore)
+    {
+        Score += hexScore;
     }
 }
