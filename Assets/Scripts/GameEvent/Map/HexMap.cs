@@ -25,16 +25,12 @@ public class HexMap : MonoBehaviour
         CreateHexTileMap(hexData);
         SetStartTileMap();
     }
-
     void CreateHexTileMap(HexDataBase hexData)
     {
         for (int x = 0; x <= MapData.Row - 1; x++)
         {
             for (int y = 0; y <= MapData.Column - 1; y++)
             {
-                //var HexData = SelectHex(hexData);
-                //var position = SetPositionVector(x, y);
-                //var hexObj = spawner.HexSpawn(SelectHex(hexData), SetPositionVector(x, y));
                 var hexObj = HexSpawn(SetPositionVector(x, y));
                 hexObj.name = $"Hex {x} / {y} ";
                 HexEnemies[x, y] = hexObj;
@@ -87,45 +83,12 @@ public class HexMap : MonoBehaviour
         }
         return pos;
     }
-
-    /*public BaseHexObj SelectHex()
-    {
-        var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
-        if (entranceCounter == 0)
-        {
-            entranceCounter++;
-            HexKeyPointObj hexStat = hexData.GetKeyHexStat("");
-            return hexStat;
-        }
-        else if (entranceCounter == lastEntrance)
-        {
-            entranceCounter++;
-            HexKeyPointObj hexStat = hexData.GetKeyHexStat("End");
-            return hexStat;
-        }
-        else
-        {
-            entranceCounter++;
-            var randomChance = UnityEngine.Random.Range(1, 100);
-            if (chanceToSpawnEnemy >= randomChance)
-            {
-                HexEnemyObj hexStat = hexData.GetEnemyHexStat();
-                return hexStat;
-            }
-            else
-            {
-                BaseHexObj hexStat = hexData.GetHexStat();
-                return hexStat;
-            }
-        }
-    }*/
     //didnt work for some reason
     Vector2 GetHexWidht(HexBase hexEnemy)
     {
         var hexSize = hexEnemy.GetComponent<Renderer>().bounds.size;
         return hexSize;
     }
-
     public void DiscoverNearHex(HexBase targetHex)
     {
         Vector2Int vector = GetVector2(targetHex);
@@ -134,12 +97,10 @@ public class HexMap : MonoBehaviour
             item.IsDiscovored = true;
         }
     }
-
     public void OpenTargetHex(HexBase targetHex)
     {
         targetHex.IsOpen = true;
     }
-
     Vector2Int GetVector2(HexBase hexEnemy)
     {
         for (int i = 0; i < HexEnemies.GetLength(0); i++)
@@ -154,7 +115,6 @@ public class HexMap : MonoBehaviour
         }
     return default;
     }
-
     Vector2Int[] matrix = new Vector2Int[]
     {
         new Vector2Int(0, -1),
@@ -164,7 +124,6 @@ public class HexMap : MonoBehaviour
         new Vector2Int(1, 0),
         new Vector2Int(1, -1)
     };
-
     List<HexBase> Neighbors(HexBase hexEnemy)
     {
         var position = GetVector2(hexEnemy); //1.1
@@ -182,7 +141,6 @@ public class HexMap : MonoBehaviour
         }
         return neighbors;
     }
-
     public void SetStartTileMap()
     {
         int x = (int)MapData.Row - 1;

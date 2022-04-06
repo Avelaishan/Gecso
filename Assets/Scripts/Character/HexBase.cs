@@ -21,7 +21,6 @@ public class HexBase : MonoBehaviour
         get => isOpen;
         set { isOpen = value; }
     }
-
     public virtual void HexInitialization<T>(T hex)
         where T : BaseHexObj
     {

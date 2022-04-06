@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -27,15 +28,15 @@ public class GameController : MonoBehaviour
                     HexMap.OpenTargetHex(targetHexEnemy);
                     AddBonus(player);
                 }
-                else if (targetHexEnemy is HexBase && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
+                /*if (targetHexEnemy is HexBase hexBase && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
                 {
-                    DiscoverNearHex(targetHexEnemy);
-                }
+                    DiscoverNearHex(hexBase);
+                }*/
                 else if (targetHexEnemy is HexEnemy enemy && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
                 {
                     GameFight(enemy);
                 }
-                else if(targetHexEnemy is HexKeyEnemy keyEnemy && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
+                else if (targetHexEnemy is HexKeyEnemy keyEnemy && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
                 {
                     GameFight(keyEnemy);
                 }
@@ -66,6 +67,7 @@ public class GameController : MonoBehaviour
         {
             hexEnemy.GetDamage(999);
             player.DamageBoostActiv = false;
+            player.AttackPowerUp--;
         }
         if (!player.DamageBoostActiv)
         {
@@ -77,17 +79,27 @@ public class GameController : MonoBehaviour
             if (hexEnemy.IsKilled)
             {
                 DiscoverNearHex(hexEnemy);
+                if(hexEnemy is HexKeyEnemy)
+                {
+                    WinGame(hexEnemy as HexKeyEnemy);
+                }
             }
+        }
+    }
+    public void WinGame(HexKeyEnemy hexKey)
+    {
+        if(hexKey.IsEnd && hexKey.IsKilled)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
     public void AddBonus(Player player)
     {
-        if (UnityEngine.Random.Range(0, 100) >= 20)
+        if (UnityEngine.Random.Range(0, 100) >= 50)
         {
             if(UnityEngine.Random.Range(0, 100) >= 20)
             {
                 player.Heal++;
-
             }
             else
             {

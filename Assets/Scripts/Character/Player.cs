@@ -24,34 +24,39 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int damage;
     public bool DamageBoostActiv;
-    [SerializeField]
-    private int CurrentHealth;
     public int Damage => damage;
     #endregion 
 
     private void Awake()
     {
-        CurrentHealth = health;
+        //CurrentHealth = health;
     }
-
+    private void Update()
+    {
+        PlayerUI();
+    }
+    private void PlayerUI()
+    {
+        var CurrentHealth = health.ToString();
+        var damage = Damage.ToString();
+        damageText.text = $"Attack: {damage}";
+        healthText.text = $"Health: {CurrentHealth}";
+    }
     public void GetDamage(int hexDamage)
     {
-        CurrentHealth -= hexDamage;
-        health = CurrentHealth;
-        Debug.Log(CurrentHealth);
-        if (CurrentHealth <= 0)
+        health -= hexDamage;
+        Debug.Log(health);
+        if (health <= 0)
         {
-            CurrentHealth = 0;
+            health = 0;
             PlayerDeath();
             Debug.Log("PlayerDeath");
         }
     }
-
     private void PlayerDeath()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-
     public void HealPlayer()
     {
         Heal--;

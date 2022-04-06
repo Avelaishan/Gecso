@@ -14,7 +14,6 @@ public class HexEnemy : HexBase
         get => isKilled;
         set { isKilled = value; }
     }
-
     public override void HexInitialization<T>(T hex)
     {
         base.HexInitialization<T>(hex);
@@ -22,15 +21,9 @@ public class HexEnemy : HexBase
         health = hexEnemyObj.Health;
         damage = hexEnemyObj.Damage;
     }
-
-
     public void GetDamage(int damage)
     {
         health -= damage;
-        if (health > 0)
-        {
-            Debug.Log(health);
-        }
         if (health <= 0)
         {
             health = 0;
@@ -39,7 +32,6 @@ public class HexEnemy : HexBase
         }
         Debug.Log(health);
     }
-
     private void HexDeath()
     {
         IsKilled = true;

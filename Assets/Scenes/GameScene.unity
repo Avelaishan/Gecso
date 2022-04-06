@@ -586,7 +586,6 @@ MonoBehaviour:
   health: 100
   damage: 20
   DamageBoostActiv: 0
-  CurrentHealth: 0
 --- !u!114 &752908306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1004,7 +1003,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawner: {fileID: 162092554}
   hexData: {fileID: 11400000, guid: f6912dd79074ade4e9af64b259e2881b, type: 2}
-  chanceToSpawnEnemy: 20
+  chanceToSpawnEnemy: 100
   tileMap: {fileID: 162092553}
 --- !u!114 &1565571408
 MonoBehaviour:
@@ -1020,7 +1019,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HexMap: {fileID: 1565571407}
   player: {fileID: 752908305}
-  camera: {fileID: 828548439}
+  playerCamera: {fileID: 828548439}
 --- !u!4 &1565571409
 Transform:
   m_ObjectHideFlags: 0

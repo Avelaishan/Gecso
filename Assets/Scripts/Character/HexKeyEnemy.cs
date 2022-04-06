@@ -6,6 +6,7 @@ public class HexKeyEnemy : HexEnemy
 {
     private bool isStart;
     private bool isEnd;
+    public bool IsEnd => isEnd;
     public override void HexInitialization<T>(T hex)
     {
         base.HexInitialization<T>(hex);
