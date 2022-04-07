@@ -9,6 +9,7 @@ public class HexEnemy : HexBase
     //protected bool isRegen;
     private bool isKilled;
     public int Damage => damage;
+    public int Health => health;
     public bool IsKilled
     {
         get => isKilled;

@@ -21,24 +21,27 @@ public class GameController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             var targetHexEnemy = GetTargetRaycast();
-            if (targetHexEnemy != null)
+            if (targetHexEnemy != null && targetHexEnemy.IsDiscovored)
             {
-                if (targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == false)
+                if (targetHexEnemy.IsOpen)
+                {
+                    switch (targetHexEnemy)
+                    {
+                        case HexKeyEnemy hexKeyEnemy :
+                            GameFight(hexKeyEnemy);
+                            break;
+                        case HexEnemy hexEnemy:
+                            GameFight(hexEnemy);
+                            break;
+                        case HexBase hex:
+                            DiscoverNearHex(hex);
+                            break;
+                    }
+                }
+                else
                 {
                     HexMap.OpenTargetHex(targetHexEnemy);
                     AddBonus(player);
-                }
-                /*if (targetHexEnemy is HexBase hexBase && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
-                {
-                    DiscoverNearHex(hexBase);
-                }*/
-                else if (targetHexEnemy is HexEnemy enemy && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
-                {
-                    GameFight(enemy);
-                }
-                else if (targetHexEnemy is HexKeyEnemy keyEnemy && targetHexEnemy.IsDiscovored == true & targetHexEnemy.IsOpen == true)
-                {
-                    GameFight(keyEnemy);
                 }
             }
         }
@@ -65,7 +68,7 @@ public class GameController : MonoBehaviour
     {
         if (player.DamageBoostActiv)
         {
-            hexEnemy.GetDamage(999);
+            hexEnemy.GetDamage(hexEnemy.Health);
             player.DamageBoostActiv = false;
             player.AttackPowerUp--;
         }
