@@ -95,7 +95,7 @@ public class GameController : MonoBehaviour
     }
     public void AddBonus(Player player)
     {
-        if (UnityEngine.Random.Range(0, 100) >= 50)
+        if (UnityEngine.Random.Range(0, 100) >= 80)
         {
             if(UnityEngine.Random.Range(0, 100) >= 20)
             {
