@@ -1,18 +1,11 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
+
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    #region ui
-    [SerializeField]
-    private Text damageText;
-    [SerializeField]
-    private Text healthText;
-    private Image healthBar;
-    #endregion
     #region int stats
     public Int32 Score;
     [SerializeField]
@@ -23,25 +16,13 @@ public class Player : MonoBehaviour
     private int health;
     [SerializeField]
     private int damage;
+    public int MaxHealth;
+    public int Health => health;
     public bool DamageBoostActiv;
     public int Damage => damage;
     #endregion 
 
-    private void Awake()
-    {
-        //CurrentHealth = health;
-    }
-    private void Update()
-    {
-        PlayerUI();
-    }
-    private void PlayerUI()
-    {
-        var CurrentHealth = health.ToString();
-        var damage = Damage.ToString();
-        damageText.text = $"Attack: {damage}";
-        healthText.text = $"Health: {CurrentHealth}";
-    }
+
     public void GetDamage(int hexDamage)
     {
         health -= hexDamage;

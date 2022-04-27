@@ -14,10 +14,12 @@ public class GameController : MonoBehaviour
     protected Action<int,int> Fight;
     [SerializeField]
     private Camera playerCamera;
-    //private BonusButtonScripts bonusButtonScripts;
+    [SerializeField]
+    private UIHandler uIHandler;
 
     private void Update()
     {
+        uIHandler.onPlayerHealthChange(player);
         if (Input.GetMouseButtonUp(0))
         {
             var targetHexEnemy = GetTargetRaycast();
@@ -29,18 +31,26 @@ public class GameController : MonoBehaviour
                     {
                         case HexKeyEnemy hexKeyEnemy :
                             GameFight(hexKeyEnemy);
+                            uIHandler.onHexHealthChange(hexKeyEnemy);
+                            uIHandler.onPlayerHealthChange(player);
+                            uIHandler.HexMaterialChanger(targetHexEnemy);
                             break;
                         case HexEnemy hexEnemy:
                             GameFight(hexEnemy);
+                            uIHandler.onHexHealthChange(hexEnemy);
+                            uIHandler.onPlayerHealthChange(player);
+                            uIHandler.HexMaterialChanger(targetHexEnemy);
                             break;
                         case HexBase hex:
                             DiscoverNearHex(hex);
+                            uIHandler.HexMaterialChanger(targetHexEnemy);
                             break;
                     }
                 }
                 else
                 {
                     HexMap.OpenTargetHex(targetHexEnemy);
+                    uIHandler.HexMaterialChanger(targetHexEnemy);
                     AddBonus(player);
                 }
             }

@@ -21,42 +21,24 @@ public class HexBase : MonoBehaviour
         get => isOpen;
         set { isOpen = value; }
     }
+    public MaterialsDataBase materialsData;
     public virtual void HexInitialization<T>(T hex)
         where T : BaseHexObj
     {
         Name = hex.name;
     }
-    /*public void ChangeCollor(HexEnemy hexEnemy)
+    public virtual void ChangeHexMaterrial<R>(R hex)
+        where R : HexBase
     {
-        if (hexEnemy.isStart)
-        {
-            var hexmat = materialsData.GetHexMaterial("StartHex");
-            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
-        }
-        else if (hexEnemy.isDiscovored)
+        if (hex.isDiscovored)
         {
             var hexmat = materialsData.GetHexMaterial("StandartHex");
-            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
+            hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
         }
-        else if(hexEnemy.isOpen && hexEnemy.damage > 0)
+        if (hex.isOpen)
         {
-            var hexmat = materialsData.GetHexMaterial("DiscovoredHex");
-            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
+            var hexmat = materialsData.GetHexMaterial("StandartHex");
+            hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
         }
-        else if (hexEnemy.isEnd)
-        {
-            var hexmat = materialsData.GetHexMaterial("EndHex");
-            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
-        }
-        else if (hexEnemy.IsKilled)
-        {
-            var hexmat = materialsData.GetHexMaterial("KilledHex");
-            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
-        }
-        else if (hexEnemy.isStart)
-        {
-            var hexmat = materialsData.GetHexMaterial("KilledHex");
-            hexEnemy.GetComponent<Renderer>().material = hexmat.HexMaterial;
-        }
-    }*/
+    }
 }

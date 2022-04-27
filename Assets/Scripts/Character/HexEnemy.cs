@@ -8,6 +8,7 @@ public class HexEnemy : HexBase
     protected int damage;
     //protected bool isRegen;
     private bool isKilled;
+    public int MaxHealth;
     public int Damage => damage;
     public int Health => health;
     public bool IsKilled
@@ -37,4 +38,14 @@ public class HexEnemy : HexBase
     {
         IsKilled = true;
     }
+    public override void ChangeHexMaterrial<R>(R hex)
+    {
+        HexEnemy hexEnemyObj = hex as HexEnemy;
+        if (hexEnemyObj.IsKilled)
+        {
+            var hexmat = materialsData.GetHexMaterial("KilledHex");
+            hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
+        }
+    }
+
 }

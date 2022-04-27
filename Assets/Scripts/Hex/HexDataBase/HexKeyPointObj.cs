@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,5 +18,10 @@ public class HexKeyPointObj : HexEnemyObj
     {
         get => isDiscovored;
         set { isDiscovored = value; }
+    }
+
+    internal object GetComponent<T>()
+    {
+        throw new NotImplementedException();
     }
 }
