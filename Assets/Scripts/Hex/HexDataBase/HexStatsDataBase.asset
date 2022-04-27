@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d165c5c758e6c8e4f91f3aac22043aa9, type: 3}
   m_Name: HexStatsDataBase
   m_EditorClassIdentifier: 
-  allHexTypes:
-  - {fileID: 11400000, guid: 5f3bb2db026649347bff75c6407e56ac, type: 2}
-  - {fileID: 11400000, guid: 1415d62031ba38340b709e0427c6dc3d, type: 2}
-  - {fileID: 11400000, guid: bf535a5afd32c924d9b28866ddc76e6c, type: 2}
-  - {fileID: 11400000, guid: 1d341db255a9f0d4c9586bfbf2abe47f, type: 2}
-  - {fileID: 11400000, guid: fae8efc0a2ed6cc4492bc8f59a3df615, type: 2}
-  - {fileID: 11400000, guid: 34d51ec6603ac1f4e9deb81e9eb77ba2, type: 2}
+  hexTypes:
+  - {fileID: 11400000, guid: 605c106d4f5549e438174107d506c6a5, type: 2}
+  hexEnemyTypes:
+  - {fileID: 11400000, guid: af824d6cef3276f4eb8fb50727c56581, type: 2}
+  hexKeyTypes:
+  - {fileID: 11400000, guid: 1b1b342fb063751408af44f04e33c374, type: 2}
+  - {fileID: 11400000, guid: c6c48c27e6b0ac14db61ec9feefeb9ac, type: 2}

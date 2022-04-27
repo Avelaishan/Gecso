@@ -5,10 +5,36 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="New Hex Stats Data Base", menuName = "Assets/Database/Item Database")]
 public class HexDataBase : ScriptableObject
 {
-    public List<HexStat> allHexTypes;
-    public HexStat GetHexStat(string hexName)
+    [SerializeField]
+    private List<BaseHexObj> hexTypes;
+    [SerializeField]
+    private List<HexEnemyObj> hexEnemyTypes;
+    [SerializeField]
+    private List<HexKeyPointObj> hexKeyTypes;
+
+
+    //public List<BaseHexObj> HexTypes => hexTypes;
+    public BaseHexObj GetHexStat()
     {
-        HexStat hexStat = allHexTypes.Find(x => x.name == hexName);
+        BaseHexObj hexStat = hexTypes.Find(x => x.BaseHex);
         return hexStat;
+    }
+    public HexEnemyObj GetEnemyHexStat()
+    {
+        HexEnemyObj hexStat = hexEnemyTypes.Find(x => x.isEnemy);
+        return hexStat;
+    }
+    public HexKeyPointObj GetKeyHexStat(string hexName)
+    {
+        if (hexName == "End")
+        {
+            HexKeyPointObj hexStat = hexKeyTypes.Find(x =>x.IsEnd);
+            return hexStat;
+        }
+        else
+        {
+            HexKeyPointObj hexStat = hexKeyTypes.Find(x => x.IsStart);
+            return hexStat;
+        }
     }
 }

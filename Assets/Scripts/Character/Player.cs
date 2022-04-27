@@ -1,96 +1,54 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public Text damageText;
-    public Text healthText;
-    public Image healthBar;
-    public int Heal;
-    public int AttackPowerUp;
-    public int health;
-    public int damage;
-    public int CurrentHealth { get; set; }
-    private GameObject RaycastedHex;
-    public HexDataBase hexData;
-    HexEnemy enemy;
+    #region int stats
+    public Int32 Score;
     [SerializeField]
-    Camera camera;
-    private void Start()
-    {
-        CurrentHealth = health;
-        damageText.GetComponent<UnityEngine.UI.Text>().text = "Attack:" + damage ;
-        healthText.GetComponent<UnityEngine.UI.Text>().text = "Health:" + CurrentHealth;
+    public int Heal;
+    [SerializeField]
+    public int AttackPowerUp;
+    [SerializeField]
+    private int health;
+    [SerializeField]
+    private int damage;
+    public int MaxHealth;
+    public int Health => health;
+    public bool DamageBoostActiv;
+    public int Damage => damage;
+    #endregion 
 
-    }
 
-    private void Update()
+    public void GetDamage(int hexDamage)
     {
-        if (Input.GetMouseButtonDown(0))
+        health -= hexDamage;
+        Debug.Log(health);
+        if (health <= 0)
         {
-            OnMouseUpAsButton();
-        }
-
-    }
-
-    private void OnMouseUpAsButton()
-    {
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D raycastHit = Physics2D.GetRayIntersection(ray);
-        if (raycastHit.collider != null)
-        {
-            RaycastedHex = raycastHit.collider.gameObject;
-            Debug.Log(raycastHit.collider.name);
-            SetEnemy(RaycastedHex);
-            if(enemy.isDiscovored && enemy.isOpen && !enemy.isKilled)
-            {
-                Attack();
-            }
+            health = 0;
+            PlayerDeath();
+            Debug.Log("PlayerDeath");
         }
     }
-
-    void SetEnemy(GameObject gameObject)
-    {
-        enemy = gameObject.GetComponent<HexEnemy>();
-    }
-   void Attack()
-    {
-        CurrentHealth -= enemy.attack;
-        enemy.health -= damage;
-        /*Debug.Log(CurrentHealth);
-        Debug.Log(enemy.health);*/
-        healthText.GetComponent<UnityEngine.UI.Text>().text = "Health:" + CurrentHealth;
-        if(CurrentHealth <= 0)
-        {
-            CurrentHealth = 0;
-            //PlayerDeath();
-            Debug.Log(CurrentHealth);
-            healthText.GetComponent<UnityEngine.UI.Text>().text = "Health:" + CurrentHealth;
-
-        }
-        if (enemy.health <= 0)
-        {
-            enemy.health = 0;
-            //HexDeath();
-
-            Debug.Log(enemy.health);
-        }
-
-    }
-
-
     private void PlayerDeath()
     {
-        throw new NotImplementedException();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-    private void HexDeath()
+    public void HealPlayer()
     {
-        throw new NotImplementedException();
+        Heal--;
+        health += 30;
     }
-
+    public void AttackUpPlayer()
+    {
+        AttackPowerUp--;
+    }
+    public void ChangeScore(int hexScore)
+    {
+        Score += hexScore;
+    }
 }
