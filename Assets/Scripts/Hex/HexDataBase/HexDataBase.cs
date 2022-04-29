@@ -6,7 +6,9 @@ using UnityEngine;
 public class HexDataBase : ScriptableObject
 {
     [SerializeField]
-    private List<BaseHexObj> hexTypes;
+    private List<HexBaseObj> hexTypes;
+    [SerializeField]
+    private List<HexStartObj> hexStarts;
     [SerializeField]
     private List<HexEnemyObj> hexEnemyTypes;
     [SerializeField]
@@ -14,9 +16,14 @@ public class HexDataBase : ScriptableObject
 
 
     //public List<BaseHexObj> HexTypes => hexTypes;
-    public BaseHexObj GetHexStat()
+    public HexBaseObj GetHexStat()
     {
-        BaseHexObj hexStat = hexTypes.Find(x => x.BaseHex);
+        HexBaseObj hexStat = hexTypes.Find(x => x.BaseHex);
+        return hexStat;
+    }
+    public HexStartObj GetStartHexStat()
+    {
+        HexStartObj hexStat = hexStarts.Find(x => x.IsStart);
         return hexStat;
     }
     public HexEnemyObj GetEnemyHexStat()
@@ -24,17 +31,9 @@ public class HexDataBase : ScriptableObject
         HexEnemyObj hexStat = hexEnemyTypes.Find(x => x.isEnemy);
         return hexStat;
     }
-    public HexKeyPointObj GetKeyHexStat(string hexName)
+    public HexKeyPointObj GetKeyHexStat()
     {
-        if (hexName == "End")
-        {
-            HexKeyPointObj hexStat = hexKeyTypes.Find(x =>x.IsEnd);
-            return hexStat;
-        }
-        else
-        {
-            HexKeyPointObj hexStat = hexKeyTypes.Find(x => x.IsStart);
-            return hexStat;
-        }
+        HexKeyPointObj hexStat = hexKeyTypes.Find(x => x.IsEnd);
+        return hexStat;
     }
 }

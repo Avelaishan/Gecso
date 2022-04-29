@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewHexStat", menuName = "HexData/Standart")]
-public class BaseHexObj : ScriptableObject
+public class HexBaseObj : ScriptableObject
 {
     [SerializeField]
     public string Name;
@@ -12,10 +12,10 @@ public class BaseHexObj : ScriptableObject
     internal HexBase enemyPrefab;
     [SerializeField]
     private readonly bool baseHex = true;
-    [SerializeField]
+    /*[SerializeField]
     internal Material HexMaterial;
     [SerializeField]
-    internal Material ClassHexMaterial;
+    internal Material ClassHexMaterial;*/
     [SerializeField]
     public Int32 Score;
 

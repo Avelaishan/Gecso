@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewEnemyHexStat", menuName = "HexData/Enemy")]
-public class HexEnemyObj : BaseHexObj
+public class HexEnemyObj : HexBaseObj
 {
     [SerializeField]
     internal int health;

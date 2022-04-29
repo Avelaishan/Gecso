@@ -25,11 +25,11 @@ public class GameController : MonoBehaviour
             var targetHexEnemy = GetTargetRaycast();
             if (targetHexEnemy != null && targetHexEnemy.IsDiscovored)
             {
-                if (targetHexEnemy.IsOpen)
+                if (targetHexEnemy.IsOpen && !targetHexEnemy.IsBlocked)
                 {
                     switch (targetHexEnemy)
                     {
-                        case HexKeyEnemy hexKeyEnemy :
+                        case HexEnd hexKeyEnemy :
                             GameFight(hexKeyEnemy);
                             uIHandler.onHexHealthChange(hexKeyEnemy);
                             uIHandler.onPlayerHealthChange(player);
@@ -47,11 +47,20 @@ public class GameController : MonoBehaviour
                             break;
                     }
                 }
-                else
+                else if(!targetHexEnemy.IsOpen && !targetHexEnemy.IsBlocked)
                 {
+                    if(targetHexEnemy is HexEnemy && !(targetHexEnemy is HexEnd))
+                    {
+                        HexMap.OpenTargetHex(targetHexEnemy);
+                        BlockNearHex(targetHexEnemy as HexEnemy);
+                    }
                     HexMap.OpenTargetHex(targetHexEnemy);
                     uIHandler.HexMaterialChanger(targetHexEnemy);
                     AddBonus(player);
+                    if (targetHexEnemy is HexStart)
+                    {
+                        DiscoverNearHex(targetHexEnemy);
+                    }
                 }
             }
         }
@@ -59,6 +68,14 @@ public class GameController : MonoBehaviour
     private void DiscoverNearHex(HexBase obj)
     {
         HexMap.DiscoverNearHex(obj);
+    }
+    private void BlockNearHex(HexEnemy hexEnemy)
+    {
+        HexMap.BlockNearHex(hexEnemy);
+    }
+    private void UnBlockNearHex(HexEnemy hexEnemy)
+    {
+        HexMap.UnBlockNearHex(hexEnemy);
     }
     public HexBase GetTargetRaycast()
     {
@@ -91,15 +108,16 @@ public class GameController : MonoBehaviour
             }
             if (hexEnemy.IsKilled)
             {
+                UnBlockNearHex(hexEnemy);
                 DiscoverNearHex(hexEnemy);
-                if(hexEnemy is HexKeyEnemy)
+                if(hexEnemy is HexEnd)
                 {
-                    WinGame(hexEnemy as HexKeyEnemy);
+                    WinGame(hexEnemy as HexEnd);
                 }
             }
         }
     }
-    public void WinGame(HexKeyEnemy hexKey)
+    public void WinGame(HexEnd hexKey)
     {
         if(hexKey.IsEnd && hexKey.IsKilled)
         {

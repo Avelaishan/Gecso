@@ -18,15 +18,10 @@ public class HexCollor : MonoBehaviour
         {
             switch (hex)
             {
-                case HexKeyEnemy hexKeyEnemy:
+                case HexEnd hexKeyEnemy:
                     if (hexKeyEnemy.IsEnd && hexKeyEnemy.IsDiscovored)
                     {
                         var hexmat = materialsData.GetHexMaterial("EndHex");
-                        hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
-                    }
-                    if (hexKeyEnemy.IsStart && hexKeyEnemy.IsDiscovored)
-                    {
-                        var hexmat = materialsData.GetHexMaterial("StartHex");
                         hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
                     }
                     break;

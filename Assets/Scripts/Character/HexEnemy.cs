@@ -38,14 +38,4 @@ public class HexEnemy : HexBase
     {
         IsKilled = true;
     }
-    public override void ChangeHexMaterrial<R>(R hex)
-    {
-        HexEnemy hexEnemyObj = hex as HexEnemy;
-        if (hexEnemyObj.IsKilled)
-        {
-            var hexmat = materialsData.GetHexMaterial("KilledHex");
-            hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
-        }
-    }
-
 }
