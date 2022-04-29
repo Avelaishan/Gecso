@@ -1,21 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class HexEnemy : HexBase
 {
     protected int health;
     protected int damage;
-    //protected bool isRegen;
     private bool isKilled;
     public int MaxHealth;
     public int Damage => damage;
     public int Health => health;
+    public event Action<HexEnemy> HexUIUpdate;
     public bool IsKilled
     {
         get => isKilled;
         set { isKilled = value; }
     }
+
     public override void HexInitialization<T>(T hex)
     {
         base.HexInitialization<T>(hex);
@@ -23,6 +23,7 @@ public class HexEnemy : HexBase
         health = hexEnemyObj.Health;
         damage = hexEnemyObj.Damage;
     }
+
     public void GetDamage(int damage)
     {
         health -= damage;
@@ -34,6 +35,7 @@ public class HexEnemy : HexBase
         }
         Debug.Log(health);
     }
+
     private void HexDeath()
     {
         IsKilled = true;

@@ -18,13 +18,13 @@ public class HexMap : MonoBehaviour
     [SerializeField]
     GameObject tileMap;
 
-
     void Start()
     {
         HexEnemies = new HexBase[(int)MapData.Row, (int)MapData.Column];
         CreateHexTileMap();
         SetStartTileMap();
     }
+
     void CreateHexTileMap()
     {
         for (int x = 0; x <= MapData.Row - 1; x++)
@@ -37,6 +37,7 @@ public class HexMap : MonoBehaviour
             }
         }
     }
+
      HexBase HexSpawn(Vector2 vector2)
     {
         var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
@@ -89,6 +90,7 @@ public class HexMap : MonoBehaviour
         var hexSize = hexEnemy.GetComponent<Renderer>().bounds.size;
         return hexSize;
     }
+
     public void DiscoverNearHex(HexBase targetHex)
     {
         foreach (var item in Neighbors(targetHex))
@@ -96,6 +98,7 @@ public class HexMap : MonoBehaviour
             item.IsDiscovored = true;
         }
     }
+
     public void BlockNearHex(HexEnemy hexEnemy)
     {
         foreach (var item in Neighbors(hexEnemy))
@@ -103,6 +106,7 @@ public class HexMap : MonoBehaviour
             item.IsBlocked = true;
         }
     }
+
     public void UnBlockNearHex(HexEnemy hexEnemy)
     {
         foreach (var item in Neighbors(hexEnemy))
@@ -110,10 +114,12 @@ public class HexMap : MonoBehaviour
             item.IsBlocked = false;
         }
     }
+
     public void OpenTargetHex(HexBase targetHex)
     {
         targetHex.IsOpen = true;
     }
+
     Vector2Int GetVector2(HexBase hexEnemy)
     {
         for (int i = 0; i < HexEnemies.GetLength(0); i++)
@@ -131,6 +137,7 @@ public class HexMap : MonoBehaviour
         }
     return default;
     }
+
     Vector2Int[] matrix = new Vector2Int[]
     {
         new Vector2Int(0, -1),
@@ -140,6 +147,7 @@ public class HexMap : MonoBehaviour
         new Vector2Int(1, 0),
         new Vector2Int(1, -1)
     };
+
     List<HexBase> Neighbors(HexBase hexEnemy)
     {
         var position = GetVector2(hexEnemy);
@@ -157,6 +165,7 @@ public class HexMap : MonoBehaviour
         }
         return neighbors;
     }
+
     public void SetStartTileMap()
     {
         int x = (int)MapData.Row - 1;

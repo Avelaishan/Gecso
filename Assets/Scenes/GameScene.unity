@@ -993,7 +993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawner: {fileID: 162092554}
   hexData: {fileID: 11400000, guid: f6912dd79074ade4e9af64b259e2881b, type: 2}
-  chanceToSpawnEnemy: 10
+  chanceToSpawnEnemy: 70
   tileMap: {fileID: 162092553}
 --- !u!114 &1565571408
 MonoBehaviour:

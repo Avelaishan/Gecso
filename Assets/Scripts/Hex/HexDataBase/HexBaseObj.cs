@@ -12,10 +12,6 @@ public class HexBaseObj : ScriptableObject
     internal HexBase enemyPrefab;
     [SerializeField]
     private readonly bool baseHex = true;
-    /*[SerializeField]
-    internal Material HexMaterial;
-    [SerializeField]
-    internal Material ClassHexMaterial;*/
     [SerializeField]
     public Int32 Score;
 

@@ -16,6 +16,7 @@ public class UIHandler : MonoBehaviour
     public event Action<Player> PlayerUIUpdate;
     public event Action<HexEnemy> HexUIUpdate;
     public event Action<HexBase> HexUIMaterialChanger;
+    public event Action UIController;
 
     public void onPlayerHealthChange(Player player)
     {

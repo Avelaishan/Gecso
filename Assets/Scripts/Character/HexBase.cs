@@ -9,9 +9,10 @@ public class HexBase : MonoBehaviour
     protected bool isOpen;
     protected bool isClosed;
     protected bool isDiscovored;
-    public string Name;
     protected bool isBlocked;
     #endregion
+    public int Score;
+    public string Name;
     public bool IsBlocked
     {
         get => isBlocked;

@@ -19,64 +19,73 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        uIHandler.onPlayerHealthChange(player);
         if (Input.GetMouseButtonUp(0))
         {
-            var targetHexEnemy = GetTargetRaycast();
-            if (targetHexEnemy != null && targetHexEnemy.IsDiscovored)
-            {
-                if (targetHexEnemy.IsOpen && !targetHexEnemy.IsBlocked)
-                {
-                    switch (targetHexEnemy)
-                    {
-                        case HexEnd hexKeyEnemy :
-                            GameFight(hexKeyEnemy);
-                            uIHandler.onHexHealthChange(hexKeyEnemy);
-                            uIHandler.onPlayerHealthChange(player);
-                            uIHandler.HexMaterialChanger(targetHexEnemy);
-                            break;
-                        case HexEnemy hexEnemy:
-                            GameFight(hexEnemy);
-                            uIHandler.onHexHealthChange(hexEnemy);
-                            uIHandler.onPlayerHealthChange(player);
-                            uIHandler.HexMaterialChanger(targetHexEnemy);
-                            break;
-                        case HexBase hex:
-                            DiscoverNearHex(hex);
-                            uIHandler.HexMaterialChanger(targetHexEnemy);
-                            break;
-                    }
-                }
-                else if(!targetHexEnemy.IsOpen && !targetHexEnemy.IsBlocked)
-                {
-                    if(targetHexEnemy is HexEnemy && !(targetHexEnemy is HexEnd))
-                    {
-                        HexMap.OpenTargetHex(targetHexEnemy);
-                        BlockNearHex(targetHexEnemy as HexEnemy);
-                    }
-                    HexMap.OpenTargetHex(targetHexEnemy);
-                    uIHandler.HexMaterialChanger(targetHexEnemy);
-                    AddBonus(player);
-                    if (targetHexEnemy is HexStart)
-                    {
-                        DiscoverNearHex(targetHexEnemy);
-                    }
-                }
-            }
+            OnClick();
         }
     }
+
+    private void OnClick()
+    {
+        var targetHexEnemy = GetTargetRaycast();
+        if (targetHexEnemy != null && targetHexEnemy.IsDiscovored)
+        {
+            CheckHex(targetHexEnemy);
+            uIHandler.HexMaterialChanger(targetHexEnemy);
+        }
+    }
+
+    private void CheckHex(HexBase hexBase)
+    {
+        if (hexBase.IsOpen && !hexBase.IsBlocked)
+        {
+            switch (hexBase)
+            {
+                case HexEnd hexKeyEnemy:
+                    GameFight(hexKeyEnemy);
+                    break;
+                case HexEnemy hexEnemy:
+                    GameFight(hexEnemy);
+                    break;
+                case HexBase hex:
+                    DiscoverNearHex(hex);
+                    break;
+            }
+        }
+        else if (!hexBase.IsOpen && !hexBase.IsBlocked)
+        {
+            if (hexBase is HexEnemy && !(hexBase is HexEnd))
+            {
+                HexMap.OpenTargetHex(hexBase);
+                BlockNearHex(hexBase as HexEnemy);
+            }
+            if (hexBase is HexStart)
+            {
+                DiscoverNearHex(hexBase);
+            }
+            else
+            {
+                HexMap.OpenTargetHex(hexBase);
+            }
+            AddBonus(player);
+        }
+    }
+
     private void DiscoverNearHex(HexBase obj)
     {
         HexMap.DiscoverNearHex(obj);
     }
+
     private void BlockNearHex(HexEnemy hexEnemy)
     {
         HexMap.BlockNearHex(hexEnemy);
     }
+
     private void UnBlockNearHex(HexEnemy hexEnemy)
     {
         HexMap.UnBlockNearHex(hexEnemy);
     }
+
     public HexBase GetTargetRaycast()
     {
         RaycastHit2D raycastHit = Physics2D.GetRayIntersection(playerCamera.ScreenPointToRay(Input.mousePosition));
@@ -91,6 +100,7 @@ public class GameController : MonoBehaviour
             return null;
         }
     }
+
     public void GameFight(HexEnemy hexEnemy)
     {
         if (player.DamageBoostActiv)
@@ -112,11 +122,13 @@ public class GameController : MonoBehaviour
                 DiscoverNearHex(hexEnemy);
                 if(hexEnemy is HexEnd)
                 {
+                    var Score = ++ hexEnemy.Score;
                     WinGame(hexEnemy as HexEnd);
                 }
             }
         }
     }
+
     public void WinGame(HexEnd hexKey)
     {
         if(hexKey.IsEnd && hexKey.IsKilled)
@@ -124,6 +136,7 @@ public class GameController : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
+
     public void AddBonus(Player player)
     {
         if (UnityEngine.Random.Range(0, 100) >= 80)

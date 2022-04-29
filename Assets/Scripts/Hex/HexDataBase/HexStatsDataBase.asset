@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hexTypes:
   - {fileID: 11400000, guid: 605c106d4f5549e438174107d506c6a5, type: 2}
+  hexStarts:
+  - {fileID: 11400000, guid: 6dce57f0730803a4ebc028c63096769f, type: 2}
   hexEnemyTypes:
   - {fileID: 11400000, guid: af824d6cef3276f4eb8fb50727c56581, type: 2}
   hexKeyTypes:
-  - {fileID: 11400000, guid: 1b1b342fb063751408af44f04e33c374, type: 2}
   - {fileID: 11400000, guid: c6c48c27e6b0ac14db61ec9feefeb9ac, type: 2}
