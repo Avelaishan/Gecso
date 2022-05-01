@@ -30,12 +30,12 @@ public class GameController : MonoBehaviour
         var targetHexEnemy = GetTargetRaycast();
         if (targetHexEnemy != null && targetHexEnemy.IsDiscovored)
         {
-            CheckHex(targetHexEnemy);
+            InteractWithHex(targetHexEnemy);
             uIHandler.HexMaterialChanger(targetHexEnemy);
         }
     }
 
-    private void CheckHex(HexBase hexBase)
+    private void InteractWithHex(HexBase hexBase)
     {
         if (hexBase.IsOpen && !hexBase.IsBlocked)
         {
