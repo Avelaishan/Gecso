@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HexCollor : MonoBehaviour
+public class HexCollorChanger : MonoBehaviour
 {
     [SerializeField]
     public MaterialsDataBase materialsData;
 
-    private void Start()
-    {
-        UIHandler.current.HexUIMaterialChanger += HexMaterial;
-    }
-
-    private void HexMaterial(HexBase hex)
+    public void HexMaterialChange(HexBase hex)
     {
         if (hex != null)
         {

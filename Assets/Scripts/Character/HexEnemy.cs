@@ -9,13 +9,18 @@ public class HexEnemy : HexBase
     public int MaxHealth;
     public int Damage => damage;
     public int Health => health;
-    public event Action<HexEnemy> HexUIUpdate;
+    protected event Action<HexEnemy> HexUIUpdate;
+    protected HexUI hexUI;
     public bool IsKilled
     {
         get => isKilled;
         set { isKilled = value; }
     }
-
+    protected void Start()
+    {
+        HexUIUpdate += hexUI.PrintHexUI;
+        HexUIUpdate?.Invoke(this);
+    }
     public override void HexInitialization<T>(T hex)
     {
         base.HexInitialization<T>(hex);
@@ -27,6 +32,7 @@ public class HexEnemy : HexBase
     public void GetDamage(int damage)
     {
         health -= damage;
+        HexUIUpdate?.Invoke(this);
         if (health <= 0)
         {
             health = 0;

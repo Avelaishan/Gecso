@@ -9,13 +9,24 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private HexMap HexMap;
     [SerializeField]
-    protected Player player;
-    protected GameObject raycastedHex;
-    protected Action<int,int> Fight;
+    private Player player;
+    private GameObject raycastedHex;
+    private Action<int,int> Fight;
+    [SerializeField]
+    private HexCollorChanger hexCollorChanger;
+    private event Action<HexBase> ChangeHexColor;
     [SerializeField]
     private Camera playerCamera;
-    [SerializeField]
-    private UIHandler uIHandler;
+
+    private void Start()
+    {
+        ChangeHexColor += hexCollorChanger.HexMaterialChange;
+    }
+    private void OnDestroy()
+    {
+        ChangeHexColor -= hexCollorChanger.HexMaterialChange;
+
+    }
 
     private void Update()
     {
@@ -31,7 +42,6 @@ public class GameController : MonoBehaviour
         if (targetHexEnemy != null && targetHexEnemy.IsDiscovored)
         {
             InteractWithHex(targetHexEnemy);
-            uIHandler.HexMaterialChanger(targetHexEnemy);
         }
     }
 
@@ -66,6 +76,7 @@ public class GameController : MonoBehaviour
             else
             {
                 HexMap.OpenTargetHex(hexBase);
+                ChangeHexColor?.Invoke(hexBase);
             }
             AddBonus(player);
         }
@@ -120,7 +131,8 @@ public class GameController : MonoBehaviour
             {
                 UnBlockNearHex(hexEnemy);
                 DiscoverNearHex(hexEnemy);
-                if(hexEnemy is HexEnd)
+                ChangeHexColor?.Invoke(hexEnemy);
+                if (hexEnemy is HexEnd)
                 {
                     var Score = ++ hexEnemy.Score;
                     WinGame(hexEnemy as HexEnd);
