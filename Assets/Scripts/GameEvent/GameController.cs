@@ -57,9 +57,9 @@ public class GameController : MonoBehaviour
                 case HexEnemy hexEnemy:
                     GameFight(hexEnemy);
                     break;
-                case HexBase hex:
+                /*case HexBase hex:
                     DiscoverNearHex(hex);
-                    break;
+                    break;*/
             }
         }
         else if (!hexBase.IsOpen && !hexBase.IsBlocked)
@@ -72,10 +72,12 @@ public class GameController : MonoBehaviour
             if (hexBase is HexStart)
             {
                 DiscoverNearHex(hexBase);
+                HexMap.OpenTargetHex(hexBase);
             }
             else
             {
                 HexMap.OpenTargetHex(hexBase);
+                DiscoverNearHex(hexBase);
                 ChangeHexColor?.Invoke(hexBase);
             }
             AddBonus(player);

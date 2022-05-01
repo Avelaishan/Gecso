@@ -120,3 +120,4 @@ MonoBehaviour:
   Score: 0
   Name: 
   MaxHealth: 0
+  hexUI: {fileID: 0}
