@@ -15,6 +15,10 @@ public class HexEnemy : HexBase
         get => isKilled;
         set { isKilled = value; }
     }
+    protected void Start()
+    {
+        HexUIUpdate?.Invoke(this);
+    }
 
     public override void HexInitialization<T>(T hex)
     {
@@ -27,10 +31,12 @@ public class HexEnemy : HexBase
     public void GetDamage(int damage)
     {
         health -= damage;
+        HexUIUpdate?.Invoke(this);
         if (health <= 0)
         {
             health = 0;
             Debug.Log("Hex Death");
+            HexUIUpdate?.Invoke(this);
             HexDeath();
         }
         Debug.Log(health);

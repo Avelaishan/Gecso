@@ -9,13 +9,23 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private HexMap HexMap;
     [SerializeField]
-    protected Player player;
-    protected GameObject raycastedHex;
-    protected Action<int,int> Fight;
+    private Player player;
+    private GameObject raycastedHex;
+    private Action<int,int> Fight;
+    [SerializeField]
+    private HexCollorChanger hexCollorChanger;
+    private event Action<HexBase> ChangeHexColor;
     [SerializeField]
     private Camera playerCamera;
-    [SerializeField]
-    private UIHandler uIHandler;
+
+    private void Start()
+    {
+        ChangeHexColor += hexCollorChanger.HexMaterialChange;
+    }
+    private void OnDestroy()
+    {
+        ChangeHexColor -= hexCollorChanger.HexMaterialChange;
+    }
 
     private void Update()
     {
@@ -30,12 +40,11 @@ public class GameController : MonoBehaviour
         var targetHexEnemy = GetTargetRaycast();
         if (targetHexEnemy != null && targetHexEnemy.IsDiscovored)
         {
-            CheckHex(targetHexEnemy);
-            uIHandler.HexMaterialChanger(targetHexEnemy);
+            InteractWithHex(targetHexEnemy);
         }
     }
 
-    private void CheckHex(HexBase hexBase)
+    private void InteractWithHex(HexBase hexBase)
     {
         if (hexBase.IsOpen && !hexBase.IsBlocked)
         {
@@ -47,9 +56,7 @@ public class GameController : MonoBehaviour
                 case HexEnemy hexEnemy:
                     GameFight(hexEnemy);
                     break;
-                case HexBase hex:
-                    DiscoverNearHex(hex);
-                    break;
+
             }
         }
         else if (!hexBase.IsOpen && !hexBase.IsBlocked)
@@ -62,10 +69,13 @@ public class GameController : MonoBehaviour
             if (hexBase is HexStart)
             {
                 DiscoverNearHex(hexBase);
+                HexMap.OpenTargetHex(hexBase);
             }
             else
             {
                 HexMap.OpenTargetHex(hexBase);
+                DiscoverNearHex(hexBase);
+                ChangeHexColor?.Invoke(hexBase);
             }
             AddBonus(player);
         }
@@ -120,7 +130,8 @@ public class GameController : MonoBehaviour
             {
                 UnBlockNearHex(hexEnemy);
                 DiscoverNearHex(hexEnemy);
-                if(hexEnemy is HexEnd)
+                ChangeHexColor?.Invoke(hexEnemy);
+                if (hexEnemy is HexEnd)
                 {
                     var Score = ++ hexEnemy.Score;
                     WinGame(hexEnemy as HexEnd);
