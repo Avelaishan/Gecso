@@ -37,7 +37,7 @@ public class HexMap : MonoBehaviour
             }
         }
     }
-
+    //Create new Spawn, that will spawn gex after creating array of scripObj
      HexBase HexSpawn(Vector2 vector2)
     {
         var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;

@@ -25,7 +25,6 @@ public class GameController : MonoBehaviour
     private void OnDestroy()
     {
         ChangeHexColor -= hexCollorChanger.HexMaterialChange;
-
     }
 
     private void Update()
@@ -57,9 +56,7 @@ public class GameController : MonoBehaviour
                 case HexEnemy hexEnemy:
                     GameFight(hexEnemy);
                     break;
-                /*case HexBase hex:
-                    DiscoverNearHex(hex);
-                    break;*/
+
             }
         }
         else if (!hexBase.IsOpen && !hexBase.IsBlocked)

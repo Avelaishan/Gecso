@@ -9,9 +9,7 @@ public class HexEnemy : HexBase
     public int MaxHealth;
     public int Damage => damage;
     public int Health => health;
-    protected event Action<HexEnemy> HexUIUpdate;
-    [SerializeField]
-    protected HexUI hexUI;
+    public event Action<HexEnemy> HexUIUpdate;
     public bool IsKilled
     {
         get => isKilled;
@@ -19,14 +17,9 @@ public class HexEnemy : HexBase
     }
     protected void Start()
     {
-        //HexUIUpdate += hexUI.PrintHexUI;
-        //HexUIUpdate?.Invoke(this);
+        HexUIUpdate?.Invoke(this);
     }
-    private void OnDestroy()
-    {
-        //HexUIUpdate -= hexUI.PrintHexUI;
 
-    }
     public override void HexInitialization<T>(T hex)
     {
         base.HexInitialization<T>(hex);
@@ -38,11 +31,12 @@ public class HexEnemy : HexBase
     public void GetDamage(int damage)
     {
         health -= damage;
-        //HexUIUpdate?.Invoke(this);
+        HexUIUpdate?.Invoke(this);
         if (health <= 0)
         {
             health = 0;
             Debug.Log("Hex Death");
+            HexUIUpdate?.Invoke(this);
             HexDeath();
         }
         Debug.Log(health);

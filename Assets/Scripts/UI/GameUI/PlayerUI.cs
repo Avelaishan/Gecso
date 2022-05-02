@@ -11,6 +11,19 @@ public class PlayerUI : MonoBehaviour
     private Text attackText;
     [SerializeField]
     private Image HealthBar;
+    private Player player;
+
+    private void Start()
+    {
+        player.PlayerUIUpdate += PrintPlayerUI;
+    }
+    private void OnDestroy()
+    {
+        if (player != null)
+        {
+            player.PlayerUIUpdate -= PrintPlayerUI;
+        }
+    }
 
     public void PrintPlayerUI(Player player)
     {

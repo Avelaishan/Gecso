@@ -372,8 +372,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -80, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1717547424}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &281775118
 GameObject:
@@ -619,6 +619,7 @@ GameObject:
   - component: {fileID: 752908304}
   - component: {fileID: 752908305}
   - component: {fileID: 752908306}
+  - component: {fileID: 752908307}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -657,6 +658,7 @@ MonoBehaviour:
   AttackPowerUp: 0
   health: 100
   damage: 20
+  playerUI: {fileID: 752908307}
   MaxHealth: 100
   DamageBoostActiv: 0
 --- !u!114 &752908306
@@ -672,6 +674,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates: []
+--- !u!114 &752908307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752908303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0a12a7f9f49bba4c904873f62456620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthText: {fileID: 580915253}
+  attackText: {fileID: 281775120}
+  HealthBar: {fileID: 104113005}
 --- !u!1 &765426971
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,7 +776,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 238.81, y: 48.800003}
+  m_AnchoredPosition: {x: 238.81, y: 48.80002}
   m_SizeDelta: {x: 400, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &941367718
@@ -833,7 +850,7 @@ RectTransform:
   - {fileID: 941367717}
   - {fileID: 1707316287}
   m_Father: {fileID: 1717547424}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -968,9 +985,6 @@ GameObject:
   - component: {fileID: 1565571409}
   - component: {fileID: 1565571408}
   - component: {fileID: 1565571407}
-  - component: {fileID: 1565571411}
-  - component: {fileID: 1565571410}
-  - component: {fileID: 1565571412}
   - component: {fileID: 1565571413}
   m_Layer: 0
   m_Name: GameConroller
@@ -993,7 +1007,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawner: {fileID: 162092554}
   hexData: {fileID: 11400000, guid: f6912dd79074ade4e9af64b259e2881b, type: 2}
-  chanceToSpawnEnemy: 70
+  chanceToSpawnEnemy: 100
   tileMap: {fileID: 162092553}
 --- !u!114 &1565571408
 MonoBehaviour:
@@ -1009,8 +1023,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HexMap: {fileID: 1565571407}
   player: {fileID: 752908305}
+  hexCollorChanger: {fileID: 1565571413}
   playerCamera: {fileID: 1913587705}
-  uIHandler: {fileID: 1565571412}
 --- !u!4 &1565571409
 Transform:
   m_ObjectHideFlags: 0
@@ -1025,48 +1039,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1565571410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565571406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6145edc516e466e418ed930a0ee074ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthText: {fileID: 1111168488}
-  attackText: {fileID: 2099495572}
-  HealthBar: {fileID: 633426136}
---- !u!114 &1565571411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565571406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0a12a7f9f49bba4c904873f62456620, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthText: {fileID: 580915253}
-  attackText: {fileID: 281775120}
-  HealthBar: {fileID: 104113005}
---- !u!114 &1565571412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565571406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84dfc222bdf2d5949877ade9c4796332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1565571413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1418,17 +1390,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1717547423
 Canvas:
   m_ObjectHideFlags: 0
@@ -1438,7 +1410,7 @@ Canvas:
   m_GameObject: {fileID: 1717547420}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 2
+  m_RenderMode: 1
   m_Camera: {fileID: 1913587705}
   m_PlaneDistance: 15
   m_PixelPerfect: 0
@@ -1448,7 +1420,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: -5
   m_TargetDisplay: 0
 --- !u!224 &1717547424
 RectTransform:
@@ -1459,18 +1431,17 @@ RectTransform:
   m_GameObject: {fileID: 1717547420}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 162092555}
   - {fileID: 960860399}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &1834609360
 GameObject:
   m_ObjectHideFlags: 0

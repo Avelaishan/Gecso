@@ -9,7 +9,19 @@ public class HexUI : MonoBehaviour
     private Text healthText;
     [SerializeField]
     private Text attackText;
+    private HexEnemy hexEnemy;
 
+    protected void Start()
+    {
+        hexEnemy.HexUIUpdate += PrintHexUI;
+    }
+    private void OnDestroy()
+    {
+        if (hexEnemy != null)
+        {
+            hexEnemy.HexUIUpdate -= PrintHexUI;
+        }
+    }
 
     public void PrintHexUI(HexEnemy hex)
     {

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    #region int stats
+    #region var
     public Int32 Score;
     [SerializeField]
     public int Heal;
@@ -16,9 +16,8 @@ public class Player : MonoBehaviour
     private int health;
     [SerializeField]
     private int damage;
-    private event Action<Player> PlayerUIUpdate;
-    [SerializeField]
-    private PlayerUI playerUI;
+    public event Action<Player> PlayerUIUpdate;
+
     public int MaxHealth;
     public int Health => health;
     public bool DamageBoostActiv;
@@ -27,13 +26,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        PlayerUIUpdate += playerUI.PrintPlayerUI;
         PlayerUIUpdate?.Invoke(this);
-    }
-    private void OnDestroy()
-    {
-        PlayerUIUpdate -= playerUI.PrintPlayerUI;
-
     }
 
     public void GetDamage(int hexDamage)
