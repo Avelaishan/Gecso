@@ -6,52 +6,128 @@ using UnityEngine;
 
 public class HexMap : MonoBehaviour
 {
+    #region Serialized var
+    [SerializeField] 
+    Spawner spawner;
     [SerializeField]
-    private Spawner spawner;
+    HexDataBase hexData;
     [SerializeField]
-    private HexDataBase hexData;
+    int chanceToSpawnEnemy;
     [SerializeField]
-    private int chanceToSpawnEnemy;
-    private int entranceCounter;
-    private int enemyCounter;
-    public HexBase[,] HexEnemies;
+    int chanceToDectoyHex;
     [SerializeField]
     GameObject tileMap;
+    #endregion
+    int entranceCounter;
+    HexBaseObj[,] HexScriptObj;
+    public HexBase[,] HexEnemies;
 
-    void Start()
+    private void Start()
     {
-        HexEnemies = new HexBase[(int)MapData.Row, (int)MapData.Column];
+        HexEnemies = new HexBase[MapGenData.Row, MapGenData.Column];
+        HexScriptObj = new HexBaseObj[MapGenData.Row, MapGenData.Column];
+        CreateScriptableHexArrey();
+        //DestroyHex(HexScriptObj);
         CreateHexTileMap();
         SetStartTileMap();
     }
 
-    void CreateHexTileMap()
+    public void DiscoverNearHex(HexBase targetHex)
     {
-        for (int x = 0; x <= MapData.Row - 1; x++)
+        foreach (var item in Neighbors(targetHex))
         {
-            for (int y = 0; y <= MapData.Column - 1; y++)
+            if (item != null)
             {
-                var hexObj = HexSpawn(SetPositionVector(x, y));
-                hexObj.name = $"Hex {x} / {y} ";
-                HexEnemies[x, y] = hexObj;
+                item.Discovored = true;
             }
         }
     }
-    //Create new Spawn, that will spawn gex after creating array of scripObj
-     HexBase HexSpawn(Vector2 vector2)
+
+    public void BlockNearHex(HexEnemy hexEnemy)
     {
-        var lastEntrance = (int)MapData.Row * (int)MapData.Column - 1;
+        foreach (var item in Neighbors(hexEnemy))
+        {
+            if (item != null)
+            {
+                item.Blocked = true;
+            }
+        }
+    }
+
+    public void UnBlockNearHex(HexEnemy hexEnemy)
+    {
+        foreach (var item in Neighbors(hexEnemy))
+        {
+            item.Blocked = false;
+        }
+    }
+
+    public void OpenTargetHex(HexBase targetHex)
+    {
+        targetHex.Open = true;
+    }
+
+    public void SetStartTileMap()
+    {
+        if(MapGenData.Row <= 1)
+        {
+            MapGenData.Row = 2;
+        }
+        if (MapGenData.Column <= 1)
+        {
+            MapGenData.Column = 2;
+        }
+        int x = (int)MapGenData.Row - 1;
+        int y = (int)MapGenData.Column - 1;
+        float lastHexPosX = HexEnemies[x, y].transform.position.x;
+        float lastHexPosY = HexEnemies[x, y].transform.position.y;
+        tileMap.transform.position = new Vector2(-lastHexPosX / 2, -lastHexPosY / 2);
+    }
+
+    private HexBaseObj[,] CreateScriptableHexArrey()
+    {
+        for (int x = 0; x <= MapGenData.Row - 1; x++)
+        {
+            for (int y = 0; y <= MapGenData.Column - 1; y++)
+            {
+                var hexObj = SetScriptObjInArrey();
+                HexScriptObj[x, y]  = hexObj;
+            }
+        }
+        return HexScriptObj;
+    }
+
+    private void CreateHexTileMap()
+    {
+        for (int x = 0; x <= MapGenData.Row - 1; x++)
+        {
+            for (int y = 0; y <= MapGenData.Column - 1; y++)
+            {
+                if(HexScriptObj[x, y] != null)
+                {
+                    var scriptObj = HexScriptObj[x, y];
+                    var hexObj = spawner.HexSpawn(scriptObj, SetPositionVector(x, y));
+                    hexObj.name = $"Hex {x} / {y} ";
+                    HexEnemies[x, y] = hexObj;
+                }
+            }
+        }
+    }
+
+    private HexBaseObj SetScriptObjInArrey()
+    {
+        var lastEntrance = (int)MapGenData.Row * (int)MapGenData.Column - 1;
         if (entranceCounter == 0)
         {
             entranceCounter++;
             HexStartObj hexStat = hexData.GetStartHexStat();
-            return spawner.HexSpawn(hexStat, vector2);
+            return hexStat;
         }
         else if (entranceCounter == lastEntrance)
         {
             entranceCounter++;
             HexKeyPointObj hexStat = hexData.GetKeyHexStat();
-            return spawner.HexSpawn(hexStat, vector2);
+            return hexStat;
         }
         else
         {
@@ -60,67 +136,17 @@ public class HexMap : MonoBehaviour
             if (chanceToSpawnEnemy >= randomChance)
             {
                 HexEnemyObj hexStat = hexData.GetEnemyHexStat();
-                return spawner.HexSpawn(hexStat, vector2);
+                return hexStat;
             }
             else
             {
                 HexBaseObj hexStat = hexData.GetHexStat();
-                return spawner.HexSpawn(hexStat, vector2);
+                return hexStat;
             }
         }
     }
-    //hexSize must be founded in GetHexWidht, that currently didnt work ¯\_(-_-)_/¯
-    Vector2 SetPositionVector(int row, int column, float hexWight = 70)
-    {
-        Vector2 pos;
-        var hexSize = hexWight / Math.Sqrt(3);
-        if (column % 2 == 0)
-        {
-            pos = new Vector2(row* hexWight, (float)(column * hexSize * 3 / 2));
-        }
-        else
-        {
-            pos = new Vector2(row* hexWight + hexWight/2, (float)(column * hexSize * 3 / 2));
-        }
-        return pos;
-    }
-    //didnt work for some reason
-    Vector2 GetHexWidht(HexBase hexEnemy)
-    {
-        var hexSize = hexEnemy.GetComponent<Renderer>().bounds.size;
-        return hexSize;
-    }
 
-    public void DiscoverNearHex(HexBase targetHex)
-    {
-        foreach (var item in Neighbors(targetHex))
-        {
-            item.IsDiscovored = true;
-        }
-    }
-
-    public void BlockNearHex(HexEnemy hexEnemy)
-    {
-        foreach (var item in Neighbors(hexEnemy))
-        {
-            item.IsBlocked = true;
-        }
-    }
-
-    public void UnBlockNearHex(HexEnemy hexEnemy)
-    {
-        foreach (var item in Neighbors(hexEnemy))
-        {
-            item.IsBlocked = false;
-        }
-    }
-
-    public void OpenTargetHex(HexBase targetHex)
-    {
-        targetHex.IsOpen = true;
-    }
-
-    Vector2Int GetVector2(HexBase hexEnemy)
+    private Vector2Int GetVector2(HexBase hexEnemy)
     {
         for (int i = 0; i < HexEnemies.GetLength(0); i++)
         {
@@ -138,40 +164,121 @@ public class HexMap : MonoBehaviour
     return default;
     }
 
-    Vector2Int[] matrix = new Vector2Int[]
+    private Vector2Int[] matriForEvenHex = new Vector2Int[]
     {
+        new Vector2Int(1, 0),
         new Vector2Int(0, -1),
+        new Vector2Int(-1, -1),
         new Vector2Int(-1, 0),
         new Vector2Int(-1, 1),
-        new Vector2Int(0, 1),
-        new Vector2Int(1, 0),
-        new Vector2Int(1, -1)
+        new Vector2Int(0, 1)
     };
 
-    List<HexBase> Neighbors(HexBase hexEnemy)
+    private Vector2Int[] matriForOddHex = new Vector2Int[]
+    {
+        new Vector2Int(1,  0),
+        new Vector2Int(1, -1),
+        new Vector2Int(0, -1),
+        new Vector2Int(-1, 0),
+        new Vector2Int(0, 1),
+        new Vector2Int(1,1)
+    };
+
+
+    //hexSize must be founded in GetHexWidht, that currently didnt work ¯\_(-_-)_/¯
+    private Vector2 SetPositionVector(int row, int column, float hexWight = 70)
+    {
+        Vector2 pos;
+        var hexSize = hexWight / Math.Sqrt(3);
+        if (column % 2 == 0)
+        {
+            pos = new Vector2(row * hexWight, (float)(column * hexSize * 3 / 2));
+        }
+        else
+        {
+            pos = new Vector2(row * hexWight + hexWight / 2, (float)(column * hexSize * 3 / 2));
+        }
+        return pos;
+    }
+
+    private List<HexBase> Neighbors(HexBase hexEnemy)
     {
         var position = GetVector2(hexEnemy);
+        var posy = position.y;
         var neighbors = new List<HexBase>();
-        foreach (var item in matrix)
+        if(posy % 2 == 0)
         {
-            var neighborPos = position + item;
-            if (neighborPos.x < 0 || neighborPos.x >= HexEnemies.GetLength(0) || 
-                neighborPos.y < 0 || neighborPos.y >= HexEnemies.GetLength(1))
+            foreach (var item in matriForEvenHex)
             {
-                continue;
+                if (item != null)
+                {
+                    var neighborPos = position + item;
+                    if (neighborPos.x < 0 || neighborPos.x >= HexEnemies.GetLength(0) ||
+                        neighborPos.y < 0 || neighborPos.y >= HexEnemies.GetLength(1))
+                    {
+                        continue;
+                    }
+                    var NeighborsHex = HexEnemies[neighborPos.x, neighborPos.y];
+                    neighbors.Add(NeighborsHex);
+                }
             }
-            var NeighborsHex = HexEnemies[neighborPos.x, neighborPos.y];
-            neighbors.Add(NeighborsHex);
+        }
+        else
+        {
+            foreach (var item in matriForOddHex)
+            {
+                if (item != null)
+                {
+                    var neighborPos = position + item;
+                    if (neighborPos.x < 0 || neighborPos.x >= HexEnemies.GetLength(0) ||
+                        neighborPos.y < 0 || neighborPos.y >= HexEnemies.GetLength(1))
+                    {
+                        continue;
+                    }
+                    var NeighborsHex = HexEnemies[neighborPos.x, neighborPos.y];
+                    neighbors.Add(NeighborsHex);
+                }
+            }
         }
         return neighbors;
     }
 
-    public void SetStartTileMap()
+    /*didnt work for some reason to lazy for fixing
+    Vector2 GetHexWidht(HexBase hexEnemy)
     {
-        int x = (int)MapData.Row - 1;
-        int y = (int)MapData.Column - 1;
-        float lastHexPosX = HexEnemies[x, y].transform.position.x;
-        float lastHexPosY = HexEnemies[x, y].transform.position.y;
-        tileMap.transform.position = new Vector2(-lastHexPosX/2, -lastHexPosY/2);
+    var hexSize = hexEnemy.GetComponent<Renderer>().bounds.size;
+    return hexSize;
+    }*/
+
+    //No idea how to implement logic thant will delite some hex but will leave path to win game
+    /*HexBaseObj[,] DestroyHex(HexBaseObj[,] hexBaseObj)
+{
+    for (int x = 0; x <= MapGenData.Row - 1; x++)
+    {
+        for (int y = 0; y <= MapGenData.Column - 1; y++)
+        {
+            if (hexBaseObj[x, y] != null )
+            {
+                if(hexBaseObj[x, y] != hexBaseObj[MapGenData.Row - 1, MapGenData.Column - 1])
+                {
+                    if(hexBaseObj[x, y] != hexBaseObj[0, 0])
+                    {
+                        var passnumber = UnityEngine.Random.Range(0, 100);
+                        if (chanceToDectoyHex >= passnumber)
+                        {
+                            hexBaseObj[x, y] = null;
+                        }
+                    }
+                }
+            }
+        }
     }
+    return hexBaseObj;
+}*/
+
+    /*void CheckForExistingNeighbors(HexBaseObj[,] hexBaseObj)
+    {
+
+    }*/
+
 }

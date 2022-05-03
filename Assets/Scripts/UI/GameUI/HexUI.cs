@@ -9,12 +9,14 @@ public class HexUI : MonoBehaviour
     private Text healthText;
     [SerializeField]
     private Text attackText;
+    [SerializeField]
     private HexEnemy hexEnemy;
 
     protected void Start()
     {
         hexEnemy.HexUIUpdate += PrintHexUI;
     }
+
     private void OnDestroy()
     {
         if (hexEnemy != null)
@@ -25,8 +27,8 @@ public class HexUI : MonoBehaviour
 
     public void PrintHexUI(HexEnemy hex)
     {
-        attackText.text = $"Attack: {hex.Damage}";
-        healthText.text = $"Health: {hex.Health}";
+        attackText.text = $"Attack: {hex.HexDamage}";
+        healthText.text = $"Health: {hex.HexHealth}";
     }
 }
 

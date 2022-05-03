@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Materials : ScriptableObject
 {
-    [SerializeField]
+    [SerializeField] 
     private Material hexMaterial;
     public Material HexMaterial => hexMaterial;
 

@@ -3,43 +3,46 @@ using UnityEngine;
 
 public class HexEnemy : HexBase
 {
-    protected int health;
-    protected int damage;
-    private bool isKilled;
+    #region protected var
+    protected int Health;
+    protected int Damage;
+    bool isKilled;
+    #endregion
+    #region public var
     public int MaxHealth;
-    public int Damage => damage;
-    public int Health => health;
-    public event Action<HexEnemy> HexUIUpdate;
+    public int HexDamage => Damage;
+    public int HexHealth => Health;
     public bool IsKilled
     {
         get => isKilled;
         set { isKilled = value; }
     }
-    protected void Start()
-    {
-        HexUIUpdate?.Invoke(this);
-    }
+    #endregion
+    public event Action<HexEnemy> HexUIUpdate;
 
     public override void HexInitialization<T>(T hex)
     {
         base.HexInitialization<T>(hex);
         HexEnemyObj hexEnemyObj = hex as HexEnemyObj;
-        health = hexEnemyObj.Health;
-        damage = hexEnemyObj.Damage;
+        Health = hexEnemyObj.Health;
+        Damage = hexEnemyObj.Damage;
     }
 
     public void GetDamage(int damage)
     {
-        health -= damage;
+        Health -= damage;
         HexUIUpdate?.Invoke(this);
-        if (health <= 0)
+        if (Health <= 0)
         {
-            health = 0;
-            Debug.Log("Hex Death");
+            Health = 0;
             HexUIUpdate?.Invoke(this);
             HexDeath();
         }
-        Debug.Log(health);
+    }
+
+    public void UIUpdateOnStart()
+    {
+        HexUIUpdate?.Invoke(this);
     }
 
     private void HexDeath()

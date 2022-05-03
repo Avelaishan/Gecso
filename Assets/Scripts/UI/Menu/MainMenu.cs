@@ -1,25 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    private void PlayGame()
+    [SerializeField]
+    private Text Score;
+
+    private void Start()
+    {
+        PrintScore();
+    }
+
+    public void PrintScore()
+    {
+        if (Score != null)
+        {
+            Score.text = $"Bomb: {GameController.PlayerScore}";
+        }
+    }
+    public void PlayGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-    private void QuitGame()
+    public void QuitGame()
     {
         Application.Quit();
     }
-    private void RestartGame()
+    public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
-    private void GoToMainMenu()
+    public void GoToMainMenu()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
     }
-
 }

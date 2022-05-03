@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HexCollorChanger : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField] 
     public MaterialsDataBase materialsData;
 
     public void HexMaterialChange(HexBase hex)
@@ -14,7 +12,7 @@ public class HexCollorChanger : MonoBehaviour
             switch (hex)
             {
                 case HexEnd hexKeyEnemy:
-                    if (hexKeyEnemy.IsEnd && hexKeyEnemy.IsDiscovored)
+                    if (hexKeyEnemy.End && hexKeyEnemy.Discovored)
                     {
                         var hexmat = materialsData.GetHexMaterial("EndHex");
                         hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
@@ -27,19 +25,19 @@ public class HexCollorChanger : MonoBehaviour
                         hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
 
                     }
-                    if (hexEnemy.IsDiscovored && !hexEnemy.IsKilled)
+                    if (hexEnemy.Discovored && !hexEnemy.IsKilled)
                     {
                         var hexmat = materialsData.GetHexMaterial("EnemyHex");
                         hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
                     }
                     break;
                 case HexBase hexBase:
-                    if (hexBase.IsOpen)
+                    if (hexBase.Open)
                     {
                         var hexmat = materialsData.GetHexMaterial("DiscovoredHex");
                         hex.GetComponent<Renderer>().material = hexmat.HexMaterial;
                     }
-                    break;
+            break;
             }
         }
     }

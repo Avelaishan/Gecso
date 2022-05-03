@@ -5,29 +5,32 @@ using UnityEngine;
 
 public class HexBase : MonoBehaviour
 {
-    #region stats
-    protected bool isOpen;
-    protected bool isClosed;
-    protected bool isDiscovored;
-    protected bool isBlocked;
+    #region protected stats
+    protected bool IsOpen;
+    protected bool IsClosed;
+    protected bool IsDiscovored;
+    protected bool IsBlocked;
     #endregion
+    #region public stats
     public int Score;
     public string Name;
-    public bool IsBlocked
+    public bool Blocked
     {
-        get => isBlocked;
-        set => isBlocked = value;
+        get => IsBlocked;
+        set => IsBlocked = value;
     }
-    public bool IsDiscovored
+    public bool Discovored
     {
-        get => isDiscovored;
-        set { isDiscovored = value; }
+        get => IsDiscovored;
+        set { IsDiscovored = value; }
     }
-    public bool IsOpen
+    public bool Open
     {
-        get => isOpen;
-        set { isOpen = value; }
+        get => IsOpen;
+        set { IsOpen = value; }
     }
+    #endregion
+
     public virtual void HexInitialization<T>(T hex)
         where T : HexBaseObj
     {

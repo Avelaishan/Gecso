@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Damage
+  m_Text: 
 --- !u!1 &2323867090189843974
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthText: {fileID: 1661200978337702276}
   attackText: {fileID: 4152482878258552697}
+  hexEnemy: {fileID: -8000823370881174837}
 --- !u!1 &3240930561521553010
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +274,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HP
+  m_Text: 
 --- !u!1 &7480381616406888074
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,4 +396,3 @@ MonoBehaviour:
   Score: 0
   Name: 
   MaxHealth: 0
-  hexUI: {fileID: 7374186410648841381}

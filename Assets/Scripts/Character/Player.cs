@@ -1,33 +1,32 @@
 using System;
 using UnityEngine;
-
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    #region var
+    #region private var
     public Int32 Score;
     [SerializeField]
-    public int Heal;
+    private int healPowerUp;
     [SerializeField]
-    public int AttackPowerUp;
+    private int attackPowerUp;
     [SerializeField]
     private int health;
     [SerializeField]
     private int damage;
-    public event Action<Player> PlayerUIUpdate;
-
+    #endregion
+    #region public var
+    public int HealPowerUp => healPowerUp;
+    public int AttackPowerUp => attackPowerUp;
     public int MaxHealth;
     public int Health => health;
     public bool DamageBoostActiv;
     public int Damage => damage;
-    #endregion 
-
-    private void Start()
-    {
-        PlayerUIUpdate?.Invoke(this);
-    }
+    #endregion
+    #region events
+    public event Action<Player> PlayerUIUpdate;
+    public event Action<Player> PlayerBonusUIUpdate;
+    #endregion
 
     public void GetDamage(int hexDamage)
     {
@@ -40,22 +39,42 @@ public class Player : MonoBehaviour
             Debug.Log("PlayerDeath");
         }
     }
-    private void PlayerDeath()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
+
     public void HealPlayer()
     {
-        Heal--;
+        healPowerUp--;
         health += 30;
-        PlayerUIUpdate?.Invoke(this);
+        PlayerBonusUIUpdate?.Invoke(this);
     }
+
     public void AttackUpPlayer()
     {
-        AttackPowerUp--;
+        attackPowerUp--;
+        PlayerBonusUIUpdate?.Invoke(this);
     }
+
     public void ChangeScore(int hexScore)
     {
         Score += hexScore;
     }
+
+    public void PlayerRedeemBonus(int bonusId)
+    {
+        if (bonusId == 1)
+        {
+            healPowerUp ++;
+            PlayerBonusUIUpdate?.Invoke(this);
+        }
+        if (bonusId == 2)
+        {
+            attackPowerUp++;
+            PlayerBonusUIUpdate?.Invoke(this);
+        }
+    }
+
+    private void PlayerDeath()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
 }

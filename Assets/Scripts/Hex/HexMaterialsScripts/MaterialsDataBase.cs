@@ -5,9 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Materials", menuName = "MaterialsDataBase")]
 public class MaterialsDataBase : ScriptableObject
 {
-    [SerializeField]
+    [SerializeField] 
     private List<Materials> allHexMaterials;
     public List<Materials> AllHexMaterials => allHexMaterials;
+
     public Materials GetHexMaterial (string MaterialName)
     {
         Materials hexMaterial = AllHexMaterials.Find(x => x.name == MaterialName);

@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class BonusButtonScripts : MonoBehaviour
 {
-    void HealPlayer(Player player)
+    private void HealPlayer(Player player)
     {
-        if(player.Heal >= 1)
+        if(player.HealPowerUp >= 1)
         {
             player.HealPlayer();
         }
@@ -16,7 +16,7 @@ public class BonusButtonScripts : MonoBehaviour
             Debug.Log("No Heal");
         }
     }
-    void OnePunchPlayer(Player player)
+    private void OnePunchPlayer(Player player)
     {
         if(player.AttackPowerUp >= 1)
         {

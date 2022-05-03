@@ -1,30 +1,20 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField]
-    private HexMap HexMap;
-    [SerializeField]
-    private Player player;
-    private GameObject raycastedHex;
-    private Action<int,int> Fight;
-    [SerializeField]
-    private HexCollorChanger hexCollorChanger;
-    private event Action<HexBase> ChangeHexColor;
-    [SerializeField]
-    private Camera playerCamera;
+    [SerializeField] HexMap HexMap;
+    [SerializeField] Player player;
+    [SerializeField] HexCollorChanger hexCollorChanger;
+    [SerializeField] Camera playerCamera;
+    GameObject raycastedHex;
+    public event Action<HexBase> ChangeHexColor;
+    public static int PlayerScore;
 
     private void Start()
     {
         ChangeHexColor += hexCollorChanger.HexMaterialChange;
-    }
-    private void OnDestroy()
-    {
-        ChangeHexColor -= hexCollorChanger.HexMaterialChange;
     }
 
     private void Update()
@@ -35,10 +25,82 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        ChangeHexColor -= hexCollorChanger.HexMaterialChange;
+    }
+
+    public HexBase GetTargetRaycast()
+    {
+        RaycastHit2D raycastHit = Physics2D.GetRayIntersection(playerCamera.ScreenPointToRay(Input.mousePosition));
+        if (raycastHit.collider != null)
+        {
+            raycastedHex = raycastHit.collider.gameObject;
+            var hexEnemy = raycastedHex.GetComponent<HexBase>();
+            return hexEnemy;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void GameFight(HexEnemy hexEnemy)
+    {
+        if (player.DamageBoostActiv)
+        {
+            hexEnemy.GetDamage(hexEnemy.HexHealth);
+            player.DamageBoostActiv = false;
+            player.AttackUpPlayer();
+        }
+        if (!player.DamageBoostActiv)
+        {
+          hexEnemy.GetDamage(player.Damage);
+            if (!hexEnemy.IsKilled)
+            {
+                player.GetDamage(hexEnemy.HexDamage);
+            }
+            if (hexEnemy.IsKilled)
+            {
+                UnBlockNearHex(hexEnemy);
+                DiscoverNearHex(hexEnemy);
+                ChangeHexColor?.Invoke(hexEnemy);
+                if (hexEnemy is HexEnd)
+                {
+                    var PlayerScore = ++ hexEnemy.Score;
+                    WinGame(hexEnemy as HexEnd);
+                }
+            }
+        }
+    }
+
+    public void WinGame(HexEnd hexKey)
+    {
+        if(hexKey.End && hexKey.IsKilled)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+    }
+    // BonusId 1=heal 2=attack
+    public void AddBonus(Player player)
+    {
+        if (UnityEngine.Random.Range(0, 100) >= 80)
+        {
+            if(UnityEngine.Random.Range(0, 100) >= 20)
+            {
+                player.PlayerRedeemBonus(1);
+            }
+            else
+            {
+                player.PlayerRedeemBonus(2);
+            }
+        }
+    }
+
     private void OnClick()
     {
         var targetHexEnemy = GetTargetRaycast();
-        if (targetHexEnemy != null && targetHexEnemy.IsDiscovored)
+        if (targetHexEnemy != null && targetHexEnemy.Discovored)
         {
             InteractWithHex(targetHexEnemy);
         }
@@ -46,7 +108,7 @@ public class GameController : MonoBehaviour
 
     private void InteractWithHex(HexBase hexBase)
     {
-        if (hexBase.IsOpen && !hexBase.IsBlocked)
+        if (hexBase.Open && !hexBase.Blocked)
         {
             switch (hexBase)
             {
@@ -59,17 +121,27 @@ public class GameController : MonoBehaviour
 
             }
         }
-        else if (!hexBase.IsOpen && !hexBase.IsBlocked)
+        else if (!hexBase.Open && !hexBase.Blocked)
         {
             if (hexBase is HexEnemy && !(hexBase is HexEnd))
             {
                 HexMap.OpenTargetHex(hexBase);
-                BlockNearHex(hexBase as HexEnemy);
+                var hexEnemy = hexBase as HexEnemy;
+                hexEnemy.UIUpdateOnStart();
+                BlockNearHex(hexEnemy);
             }
             if (hexBase is HexStart)
             {
                 DiscoverNearHex(hexBase);
                 HexMap.OpenTargetHex(hexBase);
+            }
+            if (hexBase is HexEnd)
+            {
+                HexMap.OpenTargetHex(hexBase);
+                var hexEnd = hexBase as HexEnd;
+                hexEnd.UIUpdateOnStart();
+                DiscoverNearHex(hexBase);
+                ChangeHexColor?.Invoke(hexBase);
             }
             else
             {
@@ -96,70 +168,4 @@ public class GameController : MonoBehaviour
         HexMap.UnBlockNearHex(hexEnemy);
     }
 
-    public HexBase GetTargetRaycast()
-    {
-        RaycastHit2D raycastHit = Physics2D.GetRayIntersection(playerCamera.ScreenPointToRay(Input.mousePosition));
-        if (raycastHit.collider != null)
-        {
-            raycastedHex = raycastHit.collider.gameObject;
-            var hexEnemy = raycastedHex.GetComponent<HexBase>();
-            return hexEnemy;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public void GameFight(HexEnemy hexEnemy)
-    {
-        if (player.DamageBoostActiv)
-        {
-            hexEnemy.GetDamage(hexEnemy.Health);
-            player.DamageBoostActiv = false;
-            player.AttackPowerUp--;
-        }
-        if (!player.DamageBoostActiv)
-        {
-          hexEnemy.GetDamage(player.Damage);
-            if (!hexEnemy.IsKilled)
-            {
-                player.GetDamage(hexEnemy.Damage);
-            }
-            if (hexEnemy.IsKilled)
-            {
-                UnBlockNearHex(hexEnemy);
-                DiscoverNearHex(hexEnemy);
-                ChangeHexColor?.Invoke(hexEnemy);
-                if (hexEnemy is HexEnd)
-                {
-                    var Score = ++ hexEnemy.Score;
-                    WinGame(hexEnemy as HexEnd);
-                }
-            }
-        }
-    }
-
-    public void WinGame(HexEnd hexKey)
-    {
-        if(hexKey.IsEnd && hexKey.IsKilled)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
-    }
-
-    public void AddBonus(Player player)
-    {
-        if (UnityEngine.Random.Range(0, 100) >= 80)
-        {
-            if(UnityEngine.Random.Range(0, 100) >= 20)
-            {
-                player.Heal++;
-            }
-            else
-            {
-                player.AttackPowerUp++;
-            }
-        }
-    }
 }
