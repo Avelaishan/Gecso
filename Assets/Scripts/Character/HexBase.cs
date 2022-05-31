@@ -31,6 +31,18 @@ public class HexBase : MonoBehaviour
     }
     #endregion
 
+    public int gCost;
+    public int hCost;
+    public int fCost
+    {
+        get { return hCost + gCost; }
+    }
+    public int gridX;
+    public int gridY;
+    public bool toDespawn;
+    public HexBase parent;
+
+
     public virtual void HexInitialization<T>(T hex)
         where T : HexBaseObj
     {

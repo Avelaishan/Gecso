@@ -14,22 +14,27 @@ public class HexMap : MonoBehaviour
     [SerializeField]
     int chanceToSpawnEnemy;
     [SerializeField]
-    int chanceToDectoyHex;
+    int chanceToDestroyHex;
     [SerializeField]
     GameObject tileMap;
     #endregion
     int entranceCounter;
+    Vector2 StartPosition;
+    Vector2 EndPosition;
     HexBaseObj[,] HexScriptObj;
     public HexBase[,] HexEnemies;
+    [SerializeField]
+    private PathFinder DaWae;
 
     private void Start()
     {
         HexEnemies = new HexBase[MapGenData.Row, MapGenData.Column];
         HexScriptObj = new HexBaseObj[MapGenData.Row, MapGenData.Column];
         CreateScriptableHexArrey();
-        //DestroyHex(HexScriptObj);
         CreateHexTileMap();
         SetStartTileMap();
+        DestroyHex(HexEnemies, StartPosition, EndPosition);
+
     }
 
     public void DiscoverNearHex(HexBase targetHex)
@@ -92,6 +97,16 @@ public class HexMap : MonoBehaviour
             {
                 var hexObj = SetScriptObjInArrey();
                 HexScriptObj[x, y]  = hexObj;
+                /*HexScriptObj[x, y].gridX = x;
+                HexScriptObj[x, y].gridY = y;*/
+                if (hexObj is HexStartObj)
+                {
+                    StartPosition = new Vector2(x, y);
+                }
+                if (hexObj is HexEndObj)
+                {
+                    EndPosition = new Vector2(x, y);
+                }
             }
         }
         return HexScriptObj;
@@ -114,6 +129,55 @@ public class HexMap : MonoBehaviour
         }
     }
 
+    private void DestroyHex(HexBase[,] hexBase, Vector2 StartPos, Vector2 EndPos)
+    {
+        for (int x = 0; x <= MapGenData.Row - 1; x++)
+        {
+            for (int y = 0; y <= MapGenData.Column - 1; y++)
+            {
+                if ((HexEnemies[x, y] != hexBase[MapGenData.Row - 1, MapGenData.Column - 1] & hexBase[x, y] != hexBase[0, 0]))
+                {
+                    var passnumber = UnityEngine.Random.Range(0, 100);
+                    if (chanceToDestroyHex >= passnumber)
+                    {
+                        if (DaWae.ChekPath(hexBase[(int)StartPos.x, (int)StartPos.y], hexBase[(int)EndPos.x, (int)EndPos.y], hexBase[x,y]))
+                        {
+                            Destroy(HexEnemies[x, y].gameObject);
+                            HexEnemies[x, y] = null;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /*private HexBaseObj[,] DestroyHex(HexBaseObj[,] hexBaseObj, Vector2 StartPos, Vector2 EndPos)
+    {
+
+        for (int x = 0; x <= MapGenData.Row - 1; x++)
+        {
+            for (int y = 0; y <= MapGenData.Column - 1; y++)
+            {
+                if ((hexBaseObj[x, y] != hexBaseObj[MapGenData.Row - 1, MapGenData.Column - 1] & hexBaseObj[x, y] != hexBaseObj[0, 0]))
+                {
+                    var passnumber = UnityEngine.Random.Range(0, 100);
+                    if (chanceToDectoyHex >= passnumber)
+                    {
+                        hexBaseObj[x, y].toDespawn = true;
+                        if ((DaWae.FindPath(hexBaseObj[(int)StartPos.x, (int)StartPos.y], hexBaseObj[(int)EndPos.x, (int)EndPos.y])) == false)
+                        {
+                            hexBaseObj[x, y].toDespawn = false;
+                            return hexBaseObj;
+                        }
+                    }
+                }
+            }
+        }
+        return hexBaseObj;
+    }*/
+
+
     private HexBaseObj SetScriptObjInArrey()
     {
         var lastEntrance = (int)MapGenData.Row * (int)MapGenData.Column - 1;
@@ -126,7 +190,7 @@ public class HexMap : MonoBehaviour
         else if (entranceCounter == lastEntrance)
         {
             entranceCounter++;
-            HexKeyPointObj hexStat = hexData.GetKeyHexStat();
+            HexEndObj hexStat = hexData.GetKeyHexStat();
             return hexStat;
         }
         else
@@ -164,6 +228,24 @@ public class HexMap : MonoBehaviour
     return default;
     }
 
+    private Vector2Int GetVector2(HexBaseObj hexEnemy)
+    {
+        for (int i = 0; i < HexScriptObj.GetLength(0); i++)
+        {
+            for (int j = 0; j < HexScriptObj.GetLength(1); j++)
+            {
+                if (hexEnemy == HexScriptObj[i, j])
+                {
+                    if (hexEnemy != null)
+                    {
+                        return new Vector2Int(i, j);
+                    }
+                }
+            }
+        }
+        return default;
+    }
+
     private Vector2Int[] matriForEvenHex = new Vector2Int[]
     {
         new Vector2Int(1, 0),
@@ -184,7 +266,6 @@ public class HexMap : MonoBehaviour
         new Vector2Int(1,1)
     };
 
-
     //hexSize must be founded in GetHexWidht, that currently didnt work ¯\_(-_-)_/¯
     private Vector2 SetPositionVector(int row, int column, float hexWight = 70)
     {
@@ -201,7 +282,7 @@ public class HexMap : MonoBehaviour
         return pos;
     }
 
-    private List<HexBase> Neighbors(HexBase hexEnemy)
+    public List<HexBase> Neighbors(HexBase hexEnemy)
     {
         var position = GetVector2(hexEnemy);
         var posy = position.y;
@@ -243,42 +324,53 @@ public class HexMap : MonoBehaviour
         return neighbors;
     }
 
+    public List<HexBaseObj> Neighbors(HexBaseObj hexEnemy)
+    {
+        var position = GetVector2(hexEnemy);
+        var posy = position.y;
+        var neighbors = new List<HexBaseObj>();
+        if (posy % 2 == 0)
+        {
+            foreach (var item in matriForEvenHex)
+            {
+                if (item != null)
+                {
+                    var neighborPos = position + item;
+                    if (neighborPos.x < 0 || neighborPos.x >= HexScriptObj.GetLength(0) ||
+                        neighborPos.y < 0 || neighborPos.y >= HexScriptObj.GetLength(1))
+                    {
+                        continue;
+                    }
+                    var NeighborsHex = HexScriptObj[neighborPos.x, neighborPos.y];
+                    neighbors.Add(NeighborsHex);
+                }
+            }
+        }
+        else
+        {
+            foreach (var item in matriForOddHex)
+            {
+                if (item != null)
+                {
+                    var neighborPos = position + item;
+                    if (neighborPos.x < 0 || neighborPos.x >= HexScriptObj.GetLength(0) ||
+                        neighborPos.y < 0 || neighborPos.y >= HexScriptObj.GetLength(1))
+                    {
+                        continue;
+                    }
+                    var NeighborsHex = HexScriptObj[neighborPos.x, neighborPos.y];
+                    neighbors.Add(NeighborsHex);
+                }
+            }
+        }
+        return neighbors;
+    }
+
     /*didnt work for some reason to lazy for fixing
     Vector2 GetHexWidht(HexBase hexEnemy)
     {
     var hexSize = hexEnemy.GetComponent<Renderer>().bounds.size;
     return hexSize;
-    }*/
-
-    //No idea how to implement logic thant will delite some hex but will leave path to win game
-    /*HexBaseObj[,] DestroyHex(HexBaseObj[,] hexBaseObj)
-{
-    for (int x = 0; x <= MapGenData.Row - 1; x++)
-    {
-        for (int y = 0; y <= MapGenData.Column - 1; y++)
-        {
-            if (hexBaseObj[x, y] != null )
-            {
-                if(hexBaseObj[x, y] != hexBaseObj[MapGenData.Row - 1, MapGenData.Column - 1])
-                {
-                    if(hexBaseObj[x, y] != hexBaseObj[0, 0])
-                    {
-                        var passnumber = UnityEngine.Random.Range(0, 100);
-                        if (chanceToDectoyHex >= passnumber)
-                        {
-                            hexBaseObj[x, y] = null;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return hexBaseObj;
-}*/
-
-    /*void CheckForExistingNeighbors(HexBaseObj[,] hexBaseObj)
-    {
-
     }*/
 
 }

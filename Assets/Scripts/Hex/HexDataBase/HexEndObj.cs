@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewKeyPointHexStat", menuName = "HexData/KeyPoint")]
-public class HexKeyPointObj : HexEnemyObj
+public class HexEndObj : HexEnemyObj
 {
     [SerializeField]
     private bool isStart;

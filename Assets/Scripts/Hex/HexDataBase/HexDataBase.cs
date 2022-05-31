@@ -12,7 +12,7 @@ public class HexDataBase : ScriptableObject
     [SerializeField]
     private List<HexEnemyObj> hexEnemyTypes;
     [SerializeField]
-    private List<HexKeyPointObj> hexKeyTypes;
+    private List<HexEndObj> hexKeyTypes;
 
 
     //public List<BaseHexObj> HexTypes => hexTypes;
@@ -31,9 +31,9 @@ public class HexDataBase : ScriptableObject
         HexEnemyObj hexStat = hexEnemyTypes.Find(x => x.isEnemy);
         return hexStat;
     }
-    public HexKeyPointObj GetKeyHexStat()
+    public HexEndObj GetKeyHexStat()
     {
-        HexKeyPointObj hexStat = hexKeyTypes.Find(x => x.IsEnd);
+        HexEndObj hexStat = hexKeyTypes.Find(x => x.IsEnd);
         return hexStat;
     }
 }

@@ -7,7 +7,7 @@ public class HexEnd : HexEnemy
     public override void HexInitialization<T>(T hex)
     {
         base.HexInitialization<T>(hex);
-        HexKeyPointObj hexEnemyObj = hex as HexKeyPointObj;
+        HexEndObj hexEnemyObj = hex as HexEndObj;
         IsEnd = hexEnemyObj.IsEnd;
         Discovored = hexEnemyObj.IsDiscovored;
     }
