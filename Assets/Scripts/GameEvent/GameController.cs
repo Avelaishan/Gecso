@@ -62,8 +62,8 @@ public class GameController : MonoBehaviour
             }
             if (hexEnemy.IsKilled)
             {
-                UnBlockNearHex(hexEnemy);
-                DiscoverNearHex(hexEnemy);
+                //UnBlockNearHex(hexEnemy);
+                //DiscoverNearHex(hexEnemy);
                 ChangeHexColor?.Invoke(hexEnemy);
                 if (hexEnemy is HexEnd)
                 {
@@ -76,13 +76,14 @@ public class GameController : MonoBehaviour
 
     public void WinGame(HexEnd hexKey)
     {
-        if(hexKey.End && hexKey.IsKilled)
+        if(hexKey.HexType == HexType.End && hexKey.IsKilled)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
-    // BonusId 1=heal 2=attack
-    public void AddBonus(Player player)
+
+    /* BonusId 1=heal 2=attack
+    /public void AddBonus(Player player)
     {
         if (UnityEngine.Random.Range(0, 100) >= 80)
         {
@@ -95,47 +96,45 @@ public class GameController : MonoBehaviour
                 player.PlayerRedeemBonus(2);
             }
         }
-    }
+    }*/
 
     private void OnClick()
     {
         var targetHexEnemy = GetTargetRaycast();
         if (targetHexEnemy != null && targetHexEnemy.Discovored)
         {
-            InteractWithHex(targetHexEnemy);
+            //InteractWithHex(targetHexEnemy);
         }
     }
 
-    private void InteractWithHex(HexBase hexBase)
+    /*private void InteractWithHex(HexBase hexBase)
     {
         if (hexBase.Open && !hexBase.Blocked)
         {
-            switch (hexBase)
+            if (hexBase.HexType == HexType.Enemy)
             {
-                case HexEnd hexKeyEnemy:
-                    GameFight(hexKeyEnemy);
-                    break;
-                case HexEnemy hexEnemy:
-                    GameFight(hexEnemy);
-                    break;
-
+                GameFight(hexBase as HexEnemy);
+            }
+            else if (hexBase.HexType == HexType.End)
+            {
+                GameFight(hexBase as HexEnd);
             }
         }
         else if (!hexBase.Open && !hexBase.Blocked)
         {
-            if (hexBase is HexEnemy && !(hexBase is HexEnd))
+            if (hexBase.HexType == HexType.Enemy)
             {
                 HexMap.OpenTargetHex(hexBase);
                 var hexEnemy = hexBase as HexEnemy;
                 hexEnemy.UIUpdateOnStart();
                 BlockNearHex(hexEnemy);
             }
-            if (hexBase is HexStart)
+            if (hexBase.HexType == HexType.Start)
             {
                 DiscoverNearHex(hexBase);
                 HexMap.OpenTargetHex(hexBase);
             }
-            if (hexBase is HexEnd)
+            if (hexBase.HexType == HexType.End)
             {
                 HexMap.OpenTargetHex(hexBase);
                 var hexEnd = hexBase as HexEnd;
@@ -167,5 +166,5 @@ public class GameController : MonoBehaviour
     {
         HexMap.UnBlockNearHex(hexEnemy);
     }
-
+    */
 }

@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: End
   enemyPrefab: {fileID: -8000823370881174837, guid: bc64dbf1fe1d6f248ba38a0fc0269ea0, type: 3}
-  HexMaterial: {fileID: 2100000, guid: b2269935c0214fb4fbcc86d51226cdab, type: 2}
-  ClassHexMaterial: {fileID: 2100000, guid: f0bb8a9e21316424c96a61e1a26953d9, type: 2}
   Score: 5000
+  <HexType>k__BackingField: 4
   health: 60
   damage: 15
   isEnemy: 1

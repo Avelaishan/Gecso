@@ -12,7 +12,7 @@ public class HexCollorChanger : MonoBehaviour
             switch (hex)
             {
                 case HexEnd hexKeyEnemy:
-                    if (hexKeyEnemy.End && hexKeyEnemy.Discovored)
+                    if (hexKeyEnemy.Discovored)
                     {
                         var hexmat = materialsData.GetHexMaterial("EndHex");
                         hex.GetComponent<Renderer>().material = hexmat.HexMaterial;

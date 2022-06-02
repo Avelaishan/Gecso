@@ -31,14 +31,6 @@ public class HexBase : MonoBehaviour
     }
     #endregion
 
-    public int gCost;
-    public int hCost;
-    public int fCost
-    {
-        get { return hCost + gCost; }
-    }
-    public int gridX;
-    public int gridY;
     public bool toDespawn;
     public HexBase parent;
 
@@ -47,5 +39,9 @@ public class HexBase : MonoBehaviour
         where T : HexBaseObj
     {
         Name = hex.name;
+        HexType = hex.HexType; 
     }
+    [field: SerializeField]
+    public HexType HexType { get; private set; }
+
 }

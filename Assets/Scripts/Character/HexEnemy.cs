@@ -18,6 +18,7 @@ public class HexEnemy : HexBase
         set { isKilled = value; }
     }
     #endregion
+    
     public event Action<HexEnemy> HexUIUpdate;
 
     public override void HexInitialization<T>(T hex)
@@ -26,6 +27,7 @@ public class HexEnemy : HexBase
         HexEnemyObj hexEnemyObj = hex as HexEnemyObj;
         Health = hexEnemyObj.Health;
         Damage = hexEnemyObj.Damage;
+        
     }
 
     public void GetDamage(int damage)

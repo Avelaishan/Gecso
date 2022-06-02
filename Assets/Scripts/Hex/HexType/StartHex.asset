@@ -15,5 +15,6 @@ MonoBehaviour:
   Name: 
   enemyPrefab: {fileID: -3025776639078032212, guid: 9f65b1765b05334488b4b076ad122b6c, type: 3}
   Score: 0
+  <HexType>k__BackingField: 1
   isStart: 1
   isDiscovered: 1
